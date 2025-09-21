@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import ProductModel from '../models/product.model';
 import { FetchingConfig } from '../config/fetching';
-import { ProductsResponse } from '../types/Products.response';
+import { ProductsResponse } from '../types/products.response';
 
 /**
  * Function that creates new product, permitted to [Admin] only.

@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
+import { nextTick } from 'process';
 
 declare global {
   namespace Express {
@@ -33,4 +34,25 @@ export const checkRole = (roles: string[]) => {
       return res.status(400).json({ error: 'Unauthorized or token expired!' });
     }
   };
+};
+
+export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.cookies.auth_token || req.headers.authorization;
+
+    if (!token) return res.status(401).json({ error: 'Invalid token!' });
+    if (!process.env.JWT_SECRET_KEY)
+      throw new Error('JWT_SECRET_KEY is not defined in environment variables');
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as JwtPayload;
+
+    req.userId = decoded.userId;
+
+    next();
+  } catch (error) {
+    console.log('Error verify token:', (error as Error)?.message);
+    return res
+      .status(500)
+      .json({ error: 'Something went wrong during the access token verification!' });
+  }
 };

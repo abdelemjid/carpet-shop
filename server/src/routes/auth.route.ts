@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { registerUser } from '../controllers/register.controller';
 import { body } from 'express-validator';
 import { loginUser } from '../controllers/login.controller';
+import { getUser } from '../controllers/user.controller';
+import { verifyToken } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -34,5 +36,8 @@ router.post(
   ],
   loginUser,
 );
+
+// GET method for verifying authentication's token
+router.get('/verify-token', verifyToken, getUser);
 
 export default router;

@@ -3,18 +3,34 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
+import { v2 as cloudinary } from 'cloudinary';
 import authRoutes from './routes/auth.route';
 import adminRoutes from './routes/admin.route';
 import userRoutes from './routes/user.route';
 
 dotenv.config();
 
-if (!process.env.MONGODB_CONNECTION_URI)
-  throw new Error('[-] There is not MongoDB connection URI on environment variable!!!');
+const app = express();
+const clientUrl = process.env.CLIENT_URL;
+const adminUrl = process.env.ADMIN_URL;
+const mongodbString = process.env.MONGODB_CONNECTION_URI;
+const cloudinaryName = process.env.CLOUDINARY_CLOUD_NAME;
+const cloudinaryKey = process.env.CLOUDINARY_API_KEY;
+const cloudinarySecret = process.env.CLOUDINARY_API_SECRET;
+const port = process.env.PORT || 5000;
+
+if (!mongodbString) throw new Error('[-] There is no MongoDB connection URI on Env variable!');
+if (!clientUrl) throw new Error('[-] There is no Client URL on Env variables!');
+if (!adminUrl) throw new Error('[-] There is no Admin URL on Env variables!');
+if (!cloudinaryName)
+  throw new Error("[-] There is no Cloudinary's Cloud name URL on Env variables!");
+if (!cloudinaryKey) throw new Error("[-] There is no Cloudinary's Cloud Key URL on Env variables!");
+if (!cloudinarySecret)
+  throw new Error("[-] There is no Cloudinary's Cloud Secret URL on Env variables!");
 
 // Connect the MongoDB
 mongoose
-  .connect(process.env.MONGODB_CONNECTION_URI as string)
+  .connect(mongodbString as string)
   .then(() => {
     console.log('[+] MongoDB connected successfully.');
   })
@@ -22,12 +38,16 @@ mongoose
     console.error('Error mongodb connection:', error);
   });
 
-const port = process.env.PORT || 5000;
-const app = express();
+// Cloudinary initialization
+cloudinary.config({
+  cloud_name: cloudinaryName as string,
+  api_key: cloudinaryKey as string,
+  api_secret: cloudinarySecret as string,
+});
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL as string, process.env.ADMIN_URL as string],
+    origin: [clientUrl as string, adminUrl as string],
     credentials: true,
   }),
 );

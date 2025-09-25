@@ -1,8 +1,28 @@
 import type { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import { v2 as cloudinary } from 'cloudinary';
 import ProductModel from '../models/product.model';
 import { FetchingConfig } from '../config/fetching';
 import { ProductsResponse } from '../types/products.response';
+import { Product } from '../types/product.type';
+
+/**
+ * @async Function that uploads the Product Images
+ *
+ * @param imageFiles Array of Files
+ * @returns Array of uploaded File's URLs
+ */
+const uploadImages = async (imageFiles: Express.Multer.File[]) => {
+  const uploadPromises = imageFiles.map(async (image) => {
+    const b64 = Buffer.from(image.buffer).toString('base64');
+    let dataURI = `data:${image.mimetype};base64,${b64}`;
+    const response = await cloudinary.uploader.upload(dataURI);
+
+    return response.url;
+  });
+
+  return await Promise.all(uploadPromises);
+};
 
 /**
  * Function that creates new product, permitted to [Admin] only.
@@ -19,14 +39,13 @@ export const newProduct = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) return res.status(400).json({ error: errors.array()[0]?.msg });
 
   try {
-    const { name, description, price } = req.body;
-    const images = ['link_1', 'link_2'];
-    const product = new ProductModel({
-      name: name,
-      description: description,
-      price: price,
-      images: images,
-    });
+    const imageFiles = req.files as Express.Multer.File[];
+
+    const productData: Product = req.body;
+    const images = await uploadImages(imageFiles);
+
+    productData.images = images;
+    const product = new ProductModel(productData);
 
     await product.save();
 

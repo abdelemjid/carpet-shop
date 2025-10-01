@@ -1,4 +1,5 @@
-import type { Product } from "./types/product.type";
+import { toast } from "sonner";
+import type { ProductsResponse } from "./types/product.type";
 
 const baseUrl = "http://localhost:5000";
 
@@ -43,4 +44,23 @@ export const newProduct = async (productData: FormData) => {
   if (!response.ok) throw new Error(result["error"]);
 
   return result;
+};
+
+export const fetchProducts = async (): Promise<ProductsResponse | null> => {
+  const response = await fetch(`${baseUrl}/api/products`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    toast.error(data?.error);
+    return null;
+  }
+
+  return data;
 };

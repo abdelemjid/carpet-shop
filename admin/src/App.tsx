@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import UsersPage from "./pages/UsersPage";
 import NewProduct from "./pages/NewProduct";
+import { ImageViewProvider } from "./contexts/ImagePreviewContext";
 
 function App() {
   return (
@@ -26,12 +27,22 @@ function App() {
         path="products"
         element={
           <ProtectedRoute>
-            <Layout>{<ProductsPage />}</Layout>
+            <Layout>
+              {<ImageViewProvider>{<ProductsPage />}</ImageViewProvider>}
+            </Layout>
           </ProtectedRoute>
         }
       />
       <Route
         path="products/new"
+        element={
+          <ProtectedRoute>
+            <Layout>{<NewProduct />}</Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="products/:productId"
         element={
           <ProtectedRoute>
             <Layout>{<NewProduct />}</Layout>

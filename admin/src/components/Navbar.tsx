@@ -18,7 +18,7 @@ const Navbar = () => {
         <div className="text-lg font-bold">
           <NavLink
             to="/"
-            className="py-2 px-5 transition-all duration-250 ease-in-out hover:text-indigo-400"
+            className="py-2 transition-all duration-250 ease-in-out hover:text-indigo-400"
           >
             {isAuthenticated ? "Admin Dashboard" : "Administration"}
           </NavLink>
@@ -28,26 +28,26 @@ const Navbar = () => {
         {isAuthenticated && (
           <div className="transition-all duration-200 ease-in-out">
             {/* Large Screens Navbar */}
-            <div className="hidden md:flex flex-row items-center gap-1">
+            <div className="hidden md:flex flex-row items-center gap-10">
               <NavLink
                 to="/products"
-                className="py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-indigo-400"
+                className="py-2 rounded-sm transition-all duration-250 ease-in-out hover:text-indigo-400"
               >
                 Products
               </NavLink>
               <NavLink
                 to="/orders"
-                className="py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-indigo-400"
+                className="py-2 rounded-sm transition-all duration-250 ease-in-out hover:text-indigo-400"
               >
                 Orders
               </NavLink>
               <NavLink
                 to="/users"
-                className="py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-indigo-400"
+                className="py-2 rounded-sm transition-all duration-250 ease-in-out hover:text-indigo-400"
               >
                 Users
               </NavLink>
-              <button className="cursor-pointer py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400">
+              <button className="cursor-pointer py-2 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400">
                 Logout
               </button>
             </div>

@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
-import type { Product } from "./ManageProduct";
 import { Upload, X } from "lucide-react";
+import type { Product } from "../../types/product.type";
 
 const ProductImages = () => {
   const {
@@ -11,13 +11,13 @@ const ProductImages = () => {
   } = useFormContext<Product>();
 
   const imageFiles = watch("imageFiles");
-  const images = watch("images");
+  const images: string[] = watch("images");
 
   return (
     <div className="w-full flex flex-col gap-4 mt-1">
       <div className="flex flex-col">
         {/* Preview Uploaded Images */}
-        <div className="flex flex-wrap gap-3 mt-2">
+        <div className="flex flex-wrap gap-3 my-2">
           {images &&
             Array.from(images).map((url, index) => (
               <div key={index} className="relative">

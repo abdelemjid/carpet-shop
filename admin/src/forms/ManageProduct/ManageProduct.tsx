@@ -11,10 +11,16 @@ import type { Product } from "../../types/product.type";
 interface Props {
   product?: Product;
   onSave: (productData: FormData) => void;
+  onDelete?: (e: any) => void;
   isLoading: boolean;
 }
 
-export const ManageProduct = ({ product, onSave, isLoading }: Props) => {
+export const ManageProduct = ({
+  product,
+  onSave,
+  onDelete,
+  isLoading,
+}: Props) => {
   const formMethods = useForm<Product>();
   const { handleSubmit, reset } = formMethods;
 
@@ -25,6 +31,7 @@ export const ManageProduct = ({ product, onSave, isLoading }: Props) => {
 
   const onSubmit = handleSubmit((productData: Product) => {
     const formData = new FormData();
+    if (product?._id) formData.append("_id", product._id);
     formData.append("name", productData.name);
     formData.append("description", productData.description);
     formData.append("category", productData.category);
@@ -34,8 +41,8 @@ export const ManageProduct = ({ product, onSave, isLoading }: Props) => {
     formData.append("height", productData.height.toString());
 
     if (productData.images) {
-      productData.images.forEach((url, index) => {
-        formData.append(`images[${index}]`, url);
+      productData.images.map((url) => {
+        formData.append(`images`, url);
       });
     }
 
@@ -54,14 +61,36 @@ export const ManageProduct = ({ product, onSave, isLoading }: Props) => {
         <ProductQuantityPrice />
         <ProductSizeCategory />
         <ProductImages />
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full flex justify-center items-center py-1 px-3 mt-3 rounded-md bg-indigo-500 hover:bg-indigo-400 transition-all ease-in-out duration-200 cursor-pointer"
-        >
-          {isLoading ? <img src={loading} className="w-[20px]" /> : "Submit"}
-        </button>
+        <div className="flex flex-col md:flex-row justify-between gap-5 mt-3">
+          {/* Delete Button */}
+          {product && (
+            <button
+              disabled={isLoading}
+              onClick={onDelete}
+              className="w-full flex justify-center items-center py-1 px-3 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-gray-50 transition-all ease-in-out duration-200 cursor-pointer"
+            >
+              {isLoading ? (
+                <img src={loading} className="w-[20px]" />
+              ) : (
+                "Delete"
+              )}
+            </button>
+          )}
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full flex justify-center items-center py-1 px-3 rounded-md bg-indigo-500 hover:bg-indigo-400 transition-all ease-in-out duration-200 cursor-pointer"
+          >
+            {isLoading ? (
+              <img src={loading} className="w-[20px]" />
+            ) : product ? (
+              "Update"
+            ) : (
+              "Submit"
+            )}
+          </button>
+        </div>
       </form>
     </FormProvider>
   );

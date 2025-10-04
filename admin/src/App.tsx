@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import UsersPage from "./pages/UsersPage";
 import NewProduct from "./pages/NewProduct";
 import { ImageViewProvider } from "./contexts/ImagePreviewContext";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   return (
@@ -45,7 +46,7 @@ function App() {
         path="products/:productId"
         element={
           <ProtectedRoute>
-            <Layout>{<NewProduct />}</Layout>
+            <Layout>{<EditProduct />}</Layout>
           </ProtectedRoute>
         }
       />

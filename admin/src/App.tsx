@@ -9,13 +9,16 @@ import UsersPage from "./pages/UsersPage";
 import NewProduct from "./pages/NewProduct";
 import { ImageViewProvider } from "./contexts/ImagePreviewContext";
 import EditProduct from "./pages/EditProduct";
+import UserOrders from "./pages/UserOrders";
+import { ProductsContextProvider } from "./contexts/ProductsFilterContext";
+import { OrderContextProvider } from "./contexts/OrdersFilterContext";
 
 function App() {
   return (
     <Routes>
       {/* Protected Routes */}
       <Route
-        index
+        path="/admin"
         element={
           <ProtectedRoute>
             <Layout>{<HomePage />}</Layout>
@@ -25,17 +28,21 @@ function App() {
 
       {/* Product Routes */}
       <Route
-        path="products"
+        path="/admin/products"
         element={
           <ProtectedRoute>
             <Layout>
-              {<ImageViewProvider>{<ProductsPage />}</ImageViewProvider>}
+              <ImageViewProvider>
+                <ProductsContextProvider>
+                  <ProductsPage />
+                </ProductsContextProvider>
+              </ImageViewProvider>
             </Layout>
           </ProtectedRoute>
         }
       />
       <Route
-        path="products/new"
+        path="/admin/products/new"
         element={
           <ProtectedRoute>
             <Layout>{<NewProduct />}</Layout>
@@ -43,7 +50,7 @@ function App() {
         }
       />
       <Route
-        path="products/:productId"
+        path="/admin/products/:productId"
         element={
           <ProtectedRoute>
             <Layout>{<EditProduct />}</Layout>
@@ -53,29 +60,41 @@ function App() {
 
       {/* Order Routes */}
       <Route
-        path="orders"
+        path="/admin/orders"
         element={
           <ProtectedRoute>
-            <Layout>{<OrdersPage />}</Layout>
+            <Layout>
+              <OrderContextProvider>
+                <OrdersPage />
+              </OrderContextProvider>
+            </Layout>
           </ProtectedRoute>
         }
       />
 
       {/* User Routes */}
       <Route
-        path="users"
+        path="/admin/users"
         element={
           <ProtectedRoute>
             <Layout>{<UsersPage />}</Layout>
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/admin/users/:userId"
+        element={
+          <ProtectedRoute>
+            <Layout>{<UserOrders />}</Layout>
+          </ProtectedRoute>
+        }
+      />
 
       {/* Public Routes */}
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/admin/login" element={<LoginPage />} />
 
       {/* Catch-all: redirect unknown paths */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/admin" replace />} />
     </Routes>
   );
 }

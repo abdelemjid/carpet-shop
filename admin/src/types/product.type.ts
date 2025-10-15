@@ -21,5 +21,7 @@ export interface ProductsResponse {
     page?: number;
     pages?: number;
     total?: number;
+    hasNext?: boolean;
+    hasPrev?: boolean;
   };
 }

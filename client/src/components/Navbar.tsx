@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className="w-full flex justify-between items-center">
           {/* Website Logo */}
           <NavLink to="/" end>
-            Carpet Shop
+            Carpet Store
           </NavLink>
 
           {/* Nav Links */}

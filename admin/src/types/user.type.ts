@@ -2,6 +2,8 @@ export interface User {
   _id?: string;
   username: string;
   email: string;
+  banned: boolean;
+  dateOfBan?: Date;
   createdAt?: Date;
 }
 

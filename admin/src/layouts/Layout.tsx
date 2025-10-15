@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Footer from "../components/layout/Footer";
 import { Toaster } from "sonner";
+import Navbar from "@/components/layout/Navbar";
 
 const Layout = ({ children }: { children?: React.ReactNode }) => {
   return (

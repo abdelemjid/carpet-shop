@@ -7,6 +7,8 @@ export interface User extends Document {
   email: string;
   password: string;
   role: Role;
+  banned: boolean;
+  dateOfBan?: Date;
   createdAt: Date;
 }
 
@@ -16,6 +18,8 @@ const userSchema = new Schema<User>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, required: true },
+    banned: { type: Boolean, required: true, default: false },
+    dateOfBan: { type: Date, required: false },
   },
   { timestamps: true },
 );

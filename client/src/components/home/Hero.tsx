@@ -17,7 +17,7 @@ const Hero = () => {
           <div className="h-full flex flex-col gap-8">
             {/* Hero Heading */}
             <h1 className="text-3xl lg:text-5xl font-bold">
-              Online - Carpet Shop
+              Online - Carpet Store
             </h1>
             {/* Hero Subheading */}
             <h3 className="text-1xl lg:text-3xl font-semibold mt-5">

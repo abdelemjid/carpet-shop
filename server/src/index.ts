@@ -4,9 +4,12 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { v2 as cloudinary } from 'cloudinary';
-import authRoutes from './routes/auth.route';
-import adminRoutes from './routes/admin.route';
-import userRoutes from './routes/user.route';
+import authRoutes from './routes/auth/auth.route';
+import productRoute from './routes/user/product.route';
+import userRoute from './routes/admin/user.route';
+import orderRoute from './routes/user/order.route';
+import adminOrderRoute from './routes/admin/order.route';
+import statsRoute from './routes/admin/stats.route';
 
 dotenv.config();
 
@@ -51,15 +54,19 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // app routes
 app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/products', userRoutes);
-//app.use('/api/orders');
+app.use('/api/orders', orderRoute);
+app.use('/api/products', productRoute);
+// admin routes
+app.use('/api/admin/users', userRoute);
+app.use('/api/admin/products', productRoute);
+app.use('/api/admin/orders', adminOrderRoute);
+app.use('/api/admin/stats', statsRoute);
 
 app.listen(port, () => {
   console.log(`[+] The app is running on port ${port}`);

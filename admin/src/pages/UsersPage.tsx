@@ -1,12 +1,38 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as apiClient from "../apiClient";
 import loading from "../assets/loading.svg";
+import UserItem from "../components/users/UserItem";
+import type { User } from "../types/user.type";
+import { useEffect } from "react";
 
 const UsersPage = () => {
-  const { data: users, isLoading } = useQuery({
+  const queryClient = useQueryClient();
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: apiClient.fetchUsers,
   });
+
+  const { isPending: isPendingBan, mutate: banUser } = useMutation({
+    mutationFn: apiClient.banUser,
+  });
+
+  const { isPending: isPendingDelete, mutate: deleteUser } = useMutation({
+    mutationFn: apiClient.deleteUser,
+  });
+
+  const handleBan = async (userId: string) => {
+    banUser(userId);
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+  };
+
+  const handleDelete = async (userId: string) => {
+    deleteUser(userId);
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [isPendingBan, isPendingDelete]);
 
   if (isLoading) {
     return (
@@ -18,7 +44,14 @@ const UsersPage = () => {
 
   return (
     <div className="flex flex-col gap-2 justify-center items-center">
-      Users List
+      {data?.users.map((user: User) => (
+        <UserItem
+          user={user}
+          handleDelete={handleDelete}
+          handleBan={handleBan}
+          key={user._id}
+        />
+      ))}
     </div>
   );
 };

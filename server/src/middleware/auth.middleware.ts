@@ -1,11 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
-import { nextTick } from 'process';
 
 declare global {
   namespace Express {
     interface Request {
       userId?: string;
+      role?: string;
     }
   }
 }
@@ -27,6 +27,7 @@ export const checkRole = (roles: string[]) => {
           .json({ error: 'Forbidden. You do not have the required permission.' });
 
       req.userId = decoded.userId;
+      req.role = decoded.role;
 
       next();
     } catch (error) {
@@ -47,6 +48,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as JwtPayload;
 
     req.userId = decoded.userId;
+    req.role = decoded.role;
 
     next();
   } catch (error) {

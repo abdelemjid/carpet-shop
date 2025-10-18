@@ -36,6 +36,22 @@ export const login = async (value: { email: string; password: string }) => {
   return await response.json();
 };
 
+export const logout = async () => {
+  const response = await fetch(`${baseUrl}/api/auth/logout`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    toast.error(result?.error || "Failed to logout!");
+    return;
+  }
+
+  toast.success(result.message);
+};
+
 /******************* Product ***********************/
 
 export const newProduct = async (productData: FormData) => {

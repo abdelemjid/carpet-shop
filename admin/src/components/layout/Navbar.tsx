@@ -1,11 +1,21 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import * as apiClient from "@/apiClient";
 
 const Navbar = () => {
   const [toggled, setToggled] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
+
+  const { mutate: handleLogout } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: async () => {
+      await apiClient.logout();
+      logout();
+    },
+  });
 
   const toggleMenu = () => {
     setToggled(!toggled);
@@ -47,7 +57,10 @@ const Navbar = () => {
               >
                 Users
               </NavLink>
-              <button className="cursor-pointer py-2 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400">
+              <button
+                onClick={() => handleLogout()}
+                className="cursor-pointer py-2 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400"
+              >
                 Logout
               </button>
             </div>
@@ -79,7 +92,10 @@ const Navbar = () => {
                 >
                   Users
                 </NavLink>
-                <button className="cursor-pointer py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400">
+                <button
+                  onClick={() => handleLogout()}
+                  className="cursor-pointer py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400"
+                >
                   Logout
                 </button>
               </div>

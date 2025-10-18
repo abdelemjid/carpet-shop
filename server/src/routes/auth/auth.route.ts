@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import { verifyToken } from '../../middleware/auth.middleware';
-import { loginUser, registerUser } from '../../controllers/auth/auth.controller';
+import { loginUser, logout, registerUser } from '../../controllers/auth/auth.controller';
 import { getUser } from '../../controllers/user/user.controller';
 
 const router = Router();
@@ -38,5 +38,7 @@ router.post(
 
 // GET method for verifying authentication's token
 router.get('/verify-token', verifyToken, getUser);
+
+router.get('/logout', verifyToken, logout);
 
 export default router;

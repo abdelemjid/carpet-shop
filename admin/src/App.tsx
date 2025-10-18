@@ -11,6 +11,7 @@ import { ImageViewProvider } from "./contexts/ImagePreviewContext";
 import EditProduct from "./pages/EditProduct";
 import UserOrders from "./pages/UserOrders";
 import NewUserPage from "./pages/NewUserPage";
+import { PublicOnlyRoute } from "./components/PublicOnlyRoute";
 
 function App() {
   return (
@@ -98,7 +99,14 @@ function App() {
       />
 
       {/* Public Routes */}
-      <Route path="/admin/login" element={<LoginPage />} />
+      <Route
+        path="/admin/login"
+        element={
+          <PublicOnlyRoute>
+            <LoginPage />
+          </PublicOnlyRoute>
+        }
+      />
 
       {/* Catch-all: redirect unknown paths */}
       <Route path="*" element={<Navigate to="/admin" replace />} />

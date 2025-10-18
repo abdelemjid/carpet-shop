@@ -53,7 +53,7 @@
 #### Authentication
 
 - [x] Login
-- [ ] Logout
+- [x] Logout
 
 #### Themes
 

@@ -1,9 +1,10 @@
 import { useForm, type AnyFieldApi } from "@tanstack/react-form";
 import loading from "../assets/loading.svg";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as apiClient from "../apiClient";
 import { useAuth } from "../contexts/AuthContext";
+import { toast } from "sonner";
 
 const FieldInfo = ({ field }: { field: AnyFieldApi }) => {
   return (
@@ -16,10 +17,15 @@ const FieldInfo = ({ field }: { field: AnyFieldApi }) => {
 };
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
 
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) toast.message("You are logged in");
+    else toast.error("You are not logged in");
+  }, [isAuthenticated]);
 
   const form = useForm({
     defaultValues: {

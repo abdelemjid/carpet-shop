@@ -104,3 +104,16 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Something went wrong during Login!' });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.cookie('auth_token', '', {
+      expires: new Date(0),
+    });
+
+    return res.status(200).json({ message: 'Logged out.' });
+  } catch (error) {
+    console.error('Error occurred during user logout:', (error as Error).message);
+    return res.status(500).json({ error: 'Logout operation failed!' });
+  }
+};

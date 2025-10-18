@@ -12,8 +12,8 @@ interface Props {
   setQuantity: (quantity: number[] | undefined) => void;
   status?: Status | undefined;
   setStatus: (status: Status | undefined) => void;
-  page?: number | undefined;
-  setPage: (page: number | undefined) => void;
+  page?: number;
+  setPage: (page: number) => void;
 }
 
 const OrdersFilter = ({
@@ -27,7 +27,7 @@ const OrdersFilter = ({
   setStatus,
 }: Props) => {
   return (
-    <div className="flex flex-col gap-5 lg:flex-row lg:justify-center lg:items-center h-fit">
+    <div className="flex flex-col gap-5 lg:flex-row lg:items-center h-fit">
       {/* Date Filter */}
       <DateFilter
         fromDate={fromDate}

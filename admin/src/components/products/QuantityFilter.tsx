@@ -11,7 +11,9 @@ const QuantityFilter = ({ quantity, setQuantity }: Props) => {
     <div className="flex flex-row gap-3 lg:justify-center">
       {/* Quantity From */}
       <div className="flex flex-col gap-3 bg-background">
-        <Label htmlFor="quantity-start">Quantity from</Label>
+        <Label htmlFor="quantity-start" className="text-xs font-semibold">
+          Quantity from
+        </Label>
         <Input
           type="number"
           placeholder="from..."
@@ -28,7 +30,9 @@ const QuantityFilter = ({ quantity, setQuantity }: Props) => {
       </div>
       {/* Quantity To */}
       <div className="flex flex-col gap-3">
-        <Label htmlFor="quantity-to">To</Label>
+        <Label htmlFor="quantity-to" className="text-xs font-semibold">
+          To
+        </Label>
         <Input
           type="number"
           placeholder="to..."

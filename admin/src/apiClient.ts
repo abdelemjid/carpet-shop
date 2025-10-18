@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import type { ProductsResponse } from "./types/product.type";
 import type { OrdersQuery, OrderUpdateRequestBody } from "./types/order.type";
 import type { DailyStatsResponse, StatsResponseType } from "./types/stats.type";
-
+import type { UserAccount, UsersFilterSearchQuery } from "./types/user.type";
 const baseUrl = "http://localhost:5000";
 
 /**************** Auth *****************/
@@ -135,15 +135,28 @@ export const deleteProduct = async (productId: string) => {
   toast.success("Product deleted successfully.");
 };
 
-/************ Users ****************/
+/**************** Users ****************/
 
-export const fetchUsers = async () => {
-  const response = await fetch(`${baseUrl}/api/admin/users`, {
+export const fetchUsers = async (searchQuery: UsersFilterSearchQuery) => {
+  const query = new URLSearchParams();
+
+  if (searchQuery.joinDateFrom) {
+    query.append(
+      "joinDateFrom",
+      new Date(searchQuery.joinDateFrom).toISOString().split("T")[0]
+    );
+  }
+  if (searchQuery.joinDateTo)
+    query.append(
+      "joinDateTo",
+      new Date(searchQuery.joinDateTo).toISOString().split("T")[0]
+    );
+  if (searchQuery.banned) query.append("banned", `${searchQuery.banned}`);
+  if (searchQuery.page) query.append("page", searchQuery.page.toString());
+
+  const response = await fetch(`${baseUrl}/api/admin/users?${query}`, {
     method: "GET",
     credentials: "include",
-    headers: {
-      "content-type": "application/json",
-    },
   });
 
   const result = await response.json();
@@ -186,6 +199,26 @@ export const banUser = async (userId: string) => {
   }
 
   toast.success(result?.message || "User banned or permitted successfully.");
+};
+
+export const createUser = async (user: UserAccount) => {
+  const response = await fetch(`${baseUrl}/api/admin/users/new`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    toast.error(result?.error || "User creation failed!");
+    return null;
+  }
+
+  toast.success(result?.message || "User created successfully");
 };
 
 export const deleteUser = async (userId: string) => {
@@ -232,25 +265,13 @@ export const fetchAllOrders = async (query: OrdersQuery) => {
   if (query.fromDate) {
     queryParams.append(
       "fromDate",
-      new Date(
-        query.fromDate.getFullYear(),
-        query.fromDate.getMonth(),
-        query.fromDate.getDay() - 1
-      )
-        .toISOString()
-        .split("T")[0]
+      new Date(query.fromDate).toISOString().split("T")[0]
     );
   }
   if (query.toDate) {
     queryParams.append(
       "toDate",
-      new Date(
-        query.toDate.getFullYear(),
-        query.toDate.getMonth(),
-        query.toDate.getDay() - 1
-      )
-        .toISOString()
-        .split("T")[0]
+      new Date(query.toDate).toISOString().split("T")[0]
     );
   }
   if (query.quantityFrom)

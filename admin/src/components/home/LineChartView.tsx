@@ -42,7 +42,7 @@ const calculatePercentage = (data: DailyStatsResponse[] | null | undefined) => {
   }
 
   // Sort by date first
-  const sorted = data.sort((a, b) => {
+  const sorted = data?.sort((a, b) => {
     return (
       new Date(a.date?.split("-").reverse().join("-")).getMilliseconds() -
       new Date(b.date?.split("-").reverse().join("-")).getMilliseconds()
@@ -53,18 +53,18 @@ const calculatePercentage = (data: DailyStatsResponse[] | null | undefined) => {
   let earningsAvg = 0;
   let ordersAvg = 0;
 
-  sorted.map((item) => {
-    earningsAvg += item.earnings;
-    ordersAvg += item.orders;
+  sorted?.map((item) => {
+    earningsAvg += item?.earnings || 0;
+    ordersAvg += item?.orders || 0;
   });
 
-  earningsAvg = earningsAvg / sorted.length;
-  ordersAvg = ordersAvg / sorted.length;
+  earningsAvg = earningsAvg / sorted?.length;
+  ordersAvg = ordersAvg / sorted?.length;
 
   const earningsPercent =
-    ((earningsAvg - sorted[0].earnings) / sorted[0].earnings) * 100;
+    ((earningsAvg - sorted[0]?.earnings) / sorted[0]?.earnings) * 100;
   const ordersPercent =
-    ((ordersAvg - sorted[0].orders) / sorted[0].orders) * 100;
+    ((ordersAvg - sorted[0]?.orders) / sorted[0]?.orders) * 100;
 
   return [earningsPercent, ordersPercent];
 };

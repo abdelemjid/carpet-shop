@@ -3,8 +3,10 @@ import * as apiClient from "../apiClient";
 import { useParams } from "react-router-dom";
 import type { Order, OrderUpdateRequestBody } from "../types/order.type";
 import { useEffect } from "react";
-import UserDetailsCard from "@/components/users/UserDetailsCard";
 import OrderItem from "@/components/orders/OrderItem";
+import { toast } from "sonner";
+import type { UserUpdateRequest } from "@/types/user.type";
+import UserDetailsForm from "@/forms/UpdateUser/UserDetailsForm";
 
 const UserOrders = () => {
   const { userId } = useParams();
@@ -19,7 +21,7 @@ const UserOrders = () => {
 
   const {
     data: user,
-    isLoading: isUserLoading,
+    isSuccess: isUserLoaded,
     refetch: refetchUser,
   } = useQuery({
     queryKey: [userId],
@@ -35,25 +37,40 @@ const UserOrders = () => {
     queryFn: () => apiClient.fetchUserOrders(userId),
   });
 
-  const { mutate: banUser, isPending: banPending } = useMutation({
-    mutationFn: apiClient.banUser,
+  // Update user info
+  const { mutate: updateUser, isSuccess: isUpdated } = useMutation({
+    mutationKey: ["change-user-role", userId],
+    mutationFn: async (info: UserUpdateRequest) => {
+      const response = await fetch(
+        `http://localhost:5000/api/admin/users/${userId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(info),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result?.error || "Error changing user's role!");
+        return;
+      }
+
+      toast.success(result?.message || "User's role change successfully.");
+    },
   });
 
-  const { mutate: deleteUser, isPending: deletePending } = useMutation({
+  const { mutate: deleteUser, isSuccess: isDeleted } = useMutation({
     mutationFn: apiClient.deleteUser,
   });
 
   const { mutate: updateOrder, isPending: updateOrderPending } = useMutation({
     mutationFn: apiClient.updateOrder,
   });
-
-  const handleBan = async (userId: string) => {
-    banUser(userId);
-  };
-
-  const handleDelete = async (userId: string) => {
-    deleteUser(userId);
-  };
 
   const updateStatus = async (
     _id: string,
@@ -71,7 +88,7 @@ const UserOrders = () => {
 
   useEffect(() => {
     refetchUser();
-  }, [isUserLoading, deletePending, banPending]);
+  }, [isUserLoaded, isDeleted, isUpdated]);
 
   useEffect(() => {
     refetchOrders();
@@ -80,10 +97,10 @@ const UserOrders = () => {
   return (
     <div className="flex flex-col gap-10">
       {/* User Info */}
-      <UserDetailsCard
+      <UserDetailsForm
         user={user}
-        handleBan={handleBan}
-        handleDelete={handleDelete}
+        onSave={updateUser}
+        handleDelete={deleteUser}
       />
       {/* User Orders */}
       <div className="w-full flex flex-col gap-2">

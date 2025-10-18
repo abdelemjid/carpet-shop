@@ -7,7 +7,23 @@ export interface User {
   role: string;
   banned: boolean;
   dateOfBan?: Date;
-  createdAt: Date;
+  createdAt?: Date;
+}
+
+export interface UserAccount {
+  username: string;
+  email: string;
+  password: string;
+  role: string;
+  banned: false;
+}
+
+export interface UserUpdateRequest {
+  username?: string;
+  email?: string;
+  password?: string;
+  role?: string;
+  banned?: boolean;
 }
 
 export interface UsersResponse {

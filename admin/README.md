@@ -1,69 +1,61 @@
-# React + TypeScript + Vite
+# Admin Control Panel
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Technologies
 
-Currently, two official plugins are available:
+- React with Vite
+- TypeScript
+- Tailwind Css
+- ShadCN
+- TanStack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### User Stories
 
-## Expanding the ESLint configuration
+#### Statistics
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [x] Display a Lined Chart of Orders
+- [x] Display a Lined Chart of Earings
+- [x] Display the number of registered Users
+- [x] Display the total amount of orders
+- [x] Display the total amount of published Products
+- [x] Display the Earnings & Orders of a specific Date range
+- [x] From -> To Date filter
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+#### Users
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- [x] Display Users
+- [x] Date filter
+- [x] User Status filter
+- [x] Display a User's orders
+- [x] Add new User with a specific role
+- [x] Modify a User
+- [x] Ban & Permit Users functionality
+- [x] Delete a User
+- [ ] User Role's filter
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+#### Products
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- [x] Display Products
+- [x] From -> To Date filter
+- [x] Category filter
+- [x] From -> To Quantity filter
+- [x] Add new Product
+- [x] Modify a Product
+- [x] Delete a Product
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+#### Orders
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [x] Display Orders
+- [x] Modify an Order's Status
+- [x] From -> To Date filter
+- [x] From -> To Quantity
+- [x] Order Status filter
+
+#### Authentication
+
+- [x] Login
+- [ ] Logout
+
+#### Themes
+
+- [x] Dark Mode
+- [ ] Light Mode

@@ -31,7 +31,9 @@ const StatusFilter = ({ status, setStatus }: Props) => {
 
   return (
     <div className="flex flex-col gap-3">
-      <Label>Order Status</Label>
+      <Label htmlFor="status-filter" className="text-xs font-semibold">
+        Order Status
+      </Label>
       <Select
         value={status}
         onValueChange={(value) => {
@@ -41,10 +43,10 @@ const StatusFilter = ({ status, setStatus }: Props) => {
           }
         }}
       >
-        <SelectTrigger className="w-[150px]">
+        <SelectTrigger id="status-filter" className="w-[150px] text-xs">
           <SelectValue placeholder="Select a Status" />
         </SelectTrigger>
-        <SelectContent defaultValue={status}>
+        <SelectContent className="text-xs" defaultValue={status}>
           <SelectGroup>
             <SelectLabel>Order Status</SelectLabel>
             {statusItems.map((s) => (

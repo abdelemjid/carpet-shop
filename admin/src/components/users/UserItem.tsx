@@ -12,18 +12,18 @@ const UserItem = ({ user, handleBan, handleDelete }: Props) => {
   return (
     <div className="w-full flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-items-start md:justify-between md:gap-8 px-4 py-3 border border-gray-50/20 bg-gray-900/20 backdrop-blur-md rounded-md">
       {/* Icon */}
-      <div className="w-full flex flex-row justify-center md:justify-start items-center gap-2">
-        <UserIcon size={20} />
-        <p className="text-xs font-semibold">{user.username}</p>
-      </div>
-
-      {/* Username & Email */}
       <Link to={`/admin/users/${user?._id}`} className="w-full">
-        <div className="w-full flex flex-row gap-2">
-          <Mail size={20} />
-          <p className="text-sm">{user.email}</p>
+        <div className="w-full flex flex-row justify-center md:justify-start items-center gap-2">
+          <UserIcon size={20} />
+          <p className="text-xs font-semibold">{user.username}</p>
         </div>
       </Link>
+
+      {/* Username & Email */}
+      <div className="w-full flex flex-row gap-2">
+        <Mail size={20} />
+        <p className="text-sm">{user.email}</p>
+      </div>
 
       {/* Status */}
       <div className="w-full flex flex-row items-center gap-2">

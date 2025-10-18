@@ -35,8 +35,8 @@ export interface OrderUpdateRequestBody {
 
 export interface OrdersQuery {
   page?: number;
-  fromDate?: Date;
-  toDate?: Date;
+  fromDate?: string;
+  toDate?: string;
   quantityFrom?: number;
   quantityTo?: number;
   status?: string;

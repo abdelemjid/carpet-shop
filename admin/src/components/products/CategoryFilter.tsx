@@ -23,13 +23,15 @@ const CategoryFilter = ({ selected, setCategory }: Props) => {
 
   return (
     <div className="flex flex-col gap-3">
-      <Label>Category</Label>
+      <Label htmlFor="category-filter" className="text-xs font-semibold">
+        Category
+      </Label>
       <Select
         defaultValue={categories[0]}
         value={selected}
         onValueChange={(value) => setCategory(value)}
       >
-        <SelectTrigger className="w-40">
+        <SelectTrigger id="category-filter" className="w-40 text-xs">
           <SelectValue placeholder="Select a Category" />
         </SelectTrigger>
         <SelectContent>

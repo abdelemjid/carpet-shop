@@ -5,27 +5,19 @@ import type { Product } from "../types/product.type";
 import { useImagePreview } from "../contexts/ImagePreviewContext";
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
-import { useProductsContext } from "@/contexts/ProductsFilterContext";
 import ProductsFilter from "@/components/products/ProductsFilter";
 import loading from "@/assets/loading.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PaginationView from "@/components/PaginationView";
 import ImagePreview from "@/components/products/ImagePreview";
 
 const ProductsPage = () => {
   const { displayed } = useImagePreview();
-  const {
-    fromDate,
-    setFromDate,
-    toDate,
-    setToDate,
-    category,
-    setCategory,
-    quantity,
-    setQuantity,
-    page,
-    setPage,
-  } = useProductsContext();
+  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
+  const [toDate, setToDate] = useState<Date | undefined>(undefined);
+  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [quantity, setQuantity] = useState<number[] | undefined>(undefined);
+  const [page, setPage] = useState<number>(1);
 
   const productsFilter = {
     fromDate,

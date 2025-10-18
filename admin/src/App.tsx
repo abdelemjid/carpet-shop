@@ -10,8 +10,7 @@ import NewProduct from "./pages/NewProduct";
 import { ImageViewProvider } from "./contexts/ImagePreviewContext";
 import EditProduct from "./pages/EditProduct";
 import UserOrders from "./pages/UserOrders";
-import { ProductsContextProvider } from "./contexts/ProductsFilterContext";
-import { OrderContextProvider } from "./contexts/OrdersFilterContext";
+import NewUserPage from "./pages/NewUserPage";
 
 function App() {
   return (
@@ -33,9 +32,7 @@ function App() {
           <ProtectedRoute>
             <Layout>
               <ImageViewProvider>
-                <ProductsContextProvider>
-                  <ProductsPage />
-                </ProductsContextProvider>
+                <ProductsPage />
               </ImageViewProvider>
             </Layout>
           </ProtectedRoute>
@@ -64,9 +61,7 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <OrderContextProvider>
-                <OrdersPage />
-              </OrderContextProvider>
+              <OrdersPage />
             </Layout>
           </ProtectedRoute>
         }
@@ -77,7 +72,9 @@ function App() {
         path="/admin/users"
         element={
           <ProtectedRoute>
-            <Layout>{<UsersPage />}</Layout>
+            <Layout>
+              <UsersPage />
+            </Layout>
           </ProtectedRoute>
         }
       />
@@ -86,6 +83,16 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>{<UserOrders />}</Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users/new"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <NewUserPage />
+            </Layout>
           </ProtectedRoute>
         }
       />

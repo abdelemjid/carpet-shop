@@ -24,7 +24,7 @@ const ProductsFilter = ({
   setQuantity,
 }: Props) => {
   return (
-    <div className="flex flex-col lg:flex-row gap-4 justify-center">
+    <div className="flex flex-col lg:flex-row gap-4">
       {/* Date Pickers */}
       <DateFilter
         fromDate={fromDate}

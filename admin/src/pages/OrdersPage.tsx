@@ -6,33 +6,26 @@ import {
   type Order,
   type OrdersQuery,
   type OrderUpdateRequestBody,
+  type Status,
 } from "@/types/order.type";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import OrderItem from "@/components/orders/OrderItem";
 import OrdersFilter from "@/components/orders/OrdersFilter";
-import { useOrdersFilterContext } from "@/contexts/OrdersFilterContext";
 import PaginationView from "@/components/PaginationView";
 import OrderHeader from "@/components/orders/OrderHeader";
 
 const OrdersPage = () => {
-  const {
-    fromDate,
-    setFromDate,
-    toDate,
-    setToDate,
-    quantity,
-    setQuantity,
-    status,
-    setStatus,
-    page,
-    setPage,
-  } = useOrdersFilterContext();
+  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
+  const [toDate, setToDate] = useState<Date | undefined>(undefined);
+  const [quantity, setQuantity] = useState<number[] | undefined>(undefined);
+  const [status, setStatus] = useState<Status | undefined>(undefined);
+  const [page, setPage] = useState<number>(1);
 
   const query: OrdersQuery = {};
 
   if (page) query.page = page;
-  if (fromDate) query.fromDate = fromDate;
-  if (toDate) query.toDate = toDate;
+  if (fromDate) query.fromDate = fromDate.toISOString().split("T")[0];
+  if (toDate) query.toDate = toDate.toISOString().split("T")[0];
   if (quantity && quantity.length > 0) query.quantityFrom = quantity[0];
   if (quantity && quantity.length > 1) query.quantityTo = quantity[1];
   if (status && OrderStatusEnum.includes(status)) query.status = status;

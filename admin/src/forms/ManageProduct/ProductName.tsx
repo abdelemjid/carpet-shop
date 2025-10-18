@@ -1,5 +1,5 @@
+import type { Product } from "@/types/product.type";
 import { useFormContext } from "react-hook-form";
-import type { Product } from "./ManageProduct";
 
 const ProductName = () => {
   const {

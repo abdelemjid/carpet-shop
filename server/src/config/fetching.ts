@@ -4,7 +4,7 @@ export const FetchingConfig = {
 };
 
 export const FetchingUsersConfig = {
-  pageSize: 20,
+  pageSize: 15,
   pageNumber: 1,
 };
 

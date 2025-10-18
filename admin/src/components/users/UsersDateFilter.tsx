@@ -1,18 +1,23 @@
-import { ChevronDownIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { useState } from "react";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
+import { ChevronDownIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
-import { useState } from "react";
 
 interface Props {
   fromDate: Date | undefined;
-  toDate: Date | undefined;
   setFromDate: (from: Date | undefined) => void;
+  toDate: Date | undefined;
   setToDate: (to: Date | undefined) => void;
 }
 
-const DateFilter = ({ fromDate, toDate, setFromDate, setToDate }: Props) => {
+const UsersDateFilter = ({
+  fromDate,
+  toDate,
+  setFromDate,
+  setToDate,
+}: Props) => {
   const [fromOpen, setFromOpen] = useState(false);
   const [toOpen, setToOpen] = useState(false);
 
@@ -80,4 +85,4 @@ const DateFilter = ({ fromDate, toDate, setFromDate, setToDate }: Props) => {
   );
 };
 
-export default DateFilter;
+export default UsersDateFilter;

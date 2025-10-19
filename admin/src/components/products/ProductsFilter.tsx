@@ -9,8 +9,11 @@ interface Props {
   setTo: (to: Date | undefined) => void;
   selectedCategory: string | undefined;
   setCategory: (category: string) => void;
-  quantity: number[] | undefined;
-  setQuantity: (quantity: number[]) => void;
+  quantity: { from: number | undefined; to: number | undefined } | undefined;
+  setQuantity: (quantity: {
+    from: number | undefined;
+    to: number | undefined;
+  }) => void;
 }
 
 const ProductsFilter = ({

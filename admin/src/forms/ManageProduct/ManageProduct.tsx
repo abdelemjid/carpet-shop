@@ -7,6 +7,7 @@ import ProductSizeCategory from "./ProductSizeCategory";
 import ProductImages from "./ProductImages";
 import loading from "../../assets/loading.svg";
 import type { Product } from "../../types/product.type";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   product?: Product;
@@ -61,26 +62,26 @@ export const ManageProduct = ({
         <ProductQuantityPrice />
         <ProductSizeCategory />
         <ProductImages />
-        <div className="flex flex-col md:flex-row justify-between gap-5 mt-3">
+        <div className="flex flex-row md:flex-col justify-between gap-2 mt-3">
           {/* Delete Button */}
           {product && (
-            <button
+            <Button
               disabled={isLoading}
               onClick={onDelete}
-              className="w-full flex justify-center items-center py-1 px-3 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-gray-50 transition-all ease-in-out duration-200 cursor-pointer"
+              className="w-full flex justify-center items-center py-1 px-3 rounded-md bg-red-500 hover:bg-red-400 cursor-pointer"
             >
               {isLoading ? (
                 <img src={loading} className="w-[20px]" />
               ) : (
                 "Delete"
               )}
-            </button>
+            </Button>
           )}
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center items-center py-1 px-3 rounded-md bg-indigo-500 hover:bg-indigo-400 transition-all ease-in-out duration-200 cursor-pointer"
+            className="w-full flex justify-center items-center py-1 px-3 cursor-pointer"
           >
             {isLoading ? (
               <img src={loading} className="w-[20px]" />
@@ -89,7 +90,7 @@ export const ManageProduct = ({
             ) : (
               "Submit"
             )}
-          </button>
+          </Button>
         </div>
       </form>
     </FormProvider>

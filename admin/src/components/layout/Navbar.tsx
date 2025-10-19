@@ -1,13 +1,15 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Menu, X } from "lucide-react";
+import { Menu, Sun, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import * as apiClient from "@/apiClient";
+import { useAppContext } from "@/contexts/AppContext";
 
 const Navbar = () => {
   const [toggled, setToggled] = useState(false);
   const { isAuthenticated, logout } = useAuth();
+  const { selectedTheme, setTheme } = useAppContext();
 
   const { mutate: handleLogout } = useMutation({
     mutationKey: ["logout"],
@@ -16,6 +18,11 @@ const Navbar = () => {
       logout();
     },
   });
+
+  const toggleTheme = () => {
+    if (selectedTheme === "dark") setTheme("light");
+    else setTheme("dark");
+  };
 
   const toggleMenu = () => {
     setToggled(!toggled);
@@ -58,6 +65,12 @@ const Navbar = () => {
                 Users
               </NavLink>
               <button
+                onClick={() => toggleTheme()}
+                className="cursor-pointer py-2 rounded-sm transition-all duration-250 ease-in-out"
+              >
+                <Sun size={20} className="hover:text-indigo-400" />
+              </button>
+              <button
                 onClick={() => handleLogout()}
                 className="cursor-pointer py-2 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400"
               >
@@ -92,6 +105,14 @@ const Navbar = () => {
                 >
                   Users
                 </NavLink>
+                {/* Theme Button */}
+                <button
+                  onClick={() => toggleTheme()}
+                  className="flex justify-center items-center cursor-pointer py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-indigo-400"
+                >
+                  <Sun size={20} className="hover:text-indigo-400" />
+                </button>
+                {/* Logout Button */}
                 <button
                   onClick={() => handleLogout()}
                   className="cursor-pointer py-2 px-5 rounded-sm transition-all duration-250 ease-in-out hover:text-red-400"

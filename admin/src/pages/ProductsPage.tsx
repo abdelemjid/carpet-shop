@@ -16,8 +16,12 @@ const ProductsPage = () => {
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const [toDate, setToDate] = useState<Date | undefined>(undefined);
   const [category, setCategory] = useState<string | undefined>(undefined);
-  const [quantity, setQuantity] = useState<number[] | undefined>(undefined);
+  const [quantity, setQuantity] = useState<
+    { from: number | undefined; to: number | undefined } | undefined
+  >(undefined);
   const [page, setPage] = useState<number>(1);
+
+  let refetchTimer: ReturnType<typeof setTimeout> | null = null;
 
   const productsFilter = {
     fromDate,
@@ -37,7 +41,9 @@ const ProductsPage = () => {
   });
 
   useEffect(() => {
-    refetchProducts();
+    if (refetchTimer) clearTimeout(refetchTimer);
+
+    refetchTimer = setTimeout(refetchProducts, 1500);
   }, [fromDate, toDate, category, quantity, page]);
 
   if (isLoading) {

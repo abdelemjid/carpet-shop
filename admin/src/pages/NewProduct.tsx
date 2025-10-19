@@ -21,7 +21,7 @@ const NewProduct = () => {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="container">
-        <div className="bg-gray-800/20  border border-gray-50/50 rounded-lg p-5 mx-auto lg:max-w-[80%]">
+        <div className=" border border-indigo-900/80 bg-indigo-900/20 dark:border-gray-50/50 dark:bg-gray-800/20 rounded-lg p-5 mx-auto lg:max-w-[80%]">
           {/* Form Heading */}
           <h1 className="text-2xl mb-5">New Product</h1>
           {/* Form */}

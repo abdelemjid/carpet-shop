@@ -33,11 +33,11 @@ const OrderItem = ({ order, updateStatus }: Props) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 p-3 rounded-md bg-gray-900/20 backdrop-blur-md border border-gray-50/20">
+    <div className="w-full flex flex-col gap-2 p-3 rounded-md backdrop-blur-md border border-indigo-900/80 bg-indigo-900/20 dark:bg-gray-900/20 dark:border-gray-50/20">
       {/* Order Info */}
       <div className="w-full flex flex-col md:flex-row gap-2 justify-around items-start md:items-center">
         {/* Product Id */}
-        <div className="flex-1 flex flex-row justify-center items-center gap-2">
+        <div className="flex-3 flex flex-row justify-center items-center gap-2">
           <span className="w-[70px] text-xs md:hidden">Product Id:</span>
           <Link to={`/admin/products/${order?.productId}`}>
             <span className="text-xs transition-all ease-in-out duration-150 hover:text-indigo-400">
@@ -63,7 +63,7 @@ const OrderItem = ({ order, updateStatus }: Props) => {
         </div>
 
         {/* Order Date */}
-        <div className="flex-1 flex flex-row justify-center items-center gap-2">
+        <div className="flex-3 flex flex-row justify-center items-center gap-2">
           <span className="w-[70px] text-xs md:hidden">Order date:</span>
           <span className="text-xs text-center">
             {order?.createdAt &&
@@ -81,18 +81,23 @@ const OrderItem = ({ order, updateStatus }: Props) => {
         </div>
 
         {/* Order Status */}
-        <Select onValueChange={handleStatusChange} defaultValue={order?.status}>
-          <SelectTrigger className="w-[130px]">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            {OrderStatusEnum.map((val) => (
-              <SelectItem value={val} key={`st-${val}`}>
-                {val}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex-2 flex justify-center">
+          <Select
+            onValueChange={handleStatusChange}
+            defaultValue={order?.status}
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              {OrderStatusEnum.map((val) => (
+                <SelectItem value={val} key={`st-${val}`}>
+                  {val}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       {/* Refuse Reason */}
       {status === "refused" && (

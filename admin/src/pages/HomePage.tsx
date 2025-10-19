@@ -41,7 +41,7 @@ const HomePage = () => {
         setFromDate={setFromDate}
         setToDate={setToDate}
       />
-      {/* Stats Cars */}
+      {/* Stats Cards */}
       <StatsSection stats={stats} />
       {/* Stats Lines Chart */}
       <LineChartView

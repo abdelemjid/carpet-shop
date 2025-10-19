@@ -4,15 +4,18 @@ import "./index.css";
 import App from "./App.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AppContextProvider } from "./contexts/AppContext.tsx";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
-  <AuthProvider>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
-  </AuthProvider>
+  <AppContextProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </AuthProvider>
+  </AppContextProvider>
 );

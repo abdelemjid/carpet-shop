@@ -10,7 +10,7 @@ interface Props {
 
 const UserItem = ({ user, handleBan, handleDelete }: Props) => {
   return (
-    <div className="w-full flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-items-start md:justify-between md:gap-8 px-4 py-3 border border-gray-50/20 bg-gray-900/20 backdrop-blur-md rounded-md">
+    <div className="w-full flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-items-start md:justify-between md:gap-8 px-4 py-3 border border-indigo-900/80 bg-indigo-900/20 dark:border-gray-50/20 dark:bg-gray-900/20 backdrop-blur-md rounded-md">
       {/* Icon */}
       <Link to={`/admin/users/${user?._id}`} className="w-full">
         <div className="w-full flex flex-row justify-center md:justify-start items-center gap-2">

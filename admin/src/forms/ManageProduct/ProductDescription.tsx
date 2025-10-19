@@ -14,7 +14,7 @@ const ProductDescription = () => {
       </label>
       <textarea
         {...register("description", { required: "* This field is required!" })}
-        className="w-full bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
+        className="w-full min-h-[100px] bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
       />
       <span className="text-xs text-red-400 my-1">
         {errors.description && errors.description.message}

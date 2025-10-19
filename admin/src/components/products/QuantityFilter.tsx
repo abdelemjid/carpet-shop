@@ -2,11 +2,39 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 interface Props {
-  quantity: number[] | undefined;
-  setQuantity: (quantity: number[]) => void;
+  quantity: { from: number | undefined; to: number | undefined } | undefined;
+  setQuantity: (quantity: {
+    from: number | undefined;
+    to: number | undefined;
+  }) => void;
 }
 
 const QuantityFilter = ({ quantity, setQuantity }: Props) => {
+  let timerFrom: ReturnType<typeof setTimeout> | null = null;
+  let timerTo: ReturnType<typeof setTimeout> | null = null;
+
+  const handleFromQuantity = (value: number | undefined) => {
+    if (timerFrom) clearTimeout(timerFrom);
+
+    timerFrom = setTimeout(() => {
+      setQuantity({
+        from: value,
+        to: quantity?.to || undefined,
+      });
+    }, 1000);
+  };
+
+  const handleToQuantity = (value: number | undefined) => {
+    if (timerTo) clearTimeout(timerTo);
+
+    timerTo = setTimeout(() => {
+      setQuantity({
+        from: quantity?.from || undefined,
+        to: value,
+      });
+    }, 1000);
+  };
+
   return (
     <div className="flex flex-row gap-3 lg:justify-center">
       {/* Quantity From */}
@@ -21,9 +49,12 @@ const QuantityFilter = ({ quantity, setQuantity }: Props) => {
           id="quantity-start"
           min={-1}
           max={9999}
-          value={quantity ? quantity[0] : 0}
+          value={quantity?.from || undefined}
           onChange={(e) =>
-            setQuantity([parseInt(e.target.value), quantity ? quantity[1] : 0])
+            setQuantity({
+              from: parseInt(e.target.value) || undefined,
+              to: quantity?.to || undefined,
+            })
           }
           className="w-40"
         />
@@ -40,9 +71,12 @@ const QuantityFilter = ({ quantity, setQuantity }: Props) => {
           id="quantity-to"
           min={-1}
           max={9999}
-          value={quantity ? quantity[1] : 0}
+          value={quantity?.to || undefined}
           onChange={(e) =>
-            setQuantity([quantity ? quantity[0] : 0, parseInt(e.target.value)])
+            setQuantity({
+              from: quantity?.from || undefined,
+              to: parseInt(e.target.value) || undefined,
+            })
           }
           className="w-40"
         />

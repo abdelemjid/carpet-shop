@@ -7,7 +7,7 @@ const ProductItem = ({ product }: { product: Product }) => {
   const { setImages, setDisplayed } = useImagePreview();
 
   return (
-    <div className="w-full flex flex-col justify-center items-center rounded-md transition-all duration-100 ease-in-out">
+    <div className="shadow-lg p-5 w-full flex flex-col justify-center items-center rounded-md transition-all duration-100 ease-in-out">
       {/* Product Image */}
       <div className="rounded-md overflow-hidden">
         <img
@@ -36,7 +36,7 @@ const ProductItem = ({ product }: { product: Product }) => {
 
         {/* Description */}
         <span
-          className="text-xs text-gray-50/80 mt-2 line-clamp-2"
+          className="text-xs dark:text-gray-50/80 text-gray-900/80 mt-2 line-clamp-2"
           title="Description"
         >
           {product.description}
@@ -45,16 +45,18 @@ const ProductItem = ({ product }: { product: Product }) => {
         <div className="w-full  flex flex-row justify-between items-center mt-2">
           {/* Category */}
           <div
-            className="text-gray-50/80 flex flex-row justify-center items-center gap-1"
+            className="flex flex-row justify-center items-center gap-1"
             title="Category"
           >
             <ChartColumnStacked size={15} />
-            <span className="text-sm">{product.category.toUpperCase()}</span>
+            <span className="text-sm dark:text-gray-50/80">
+              {product.category.toUpperCase()}
+            </span>
           </div>
 
           {/* Size */}
           <span
-            className="text-sm text-gray-50/80  text-center font-semibold mt-2"
+            className="text-sm dark:text-gray-50/80 text-center font-semibold"
             title="Size"
           >
             {product.width}x{product.height} cm
@@ -66,7 +68,9 @@ const ProductItem = ({ product }: { product: Product }) => {
             title="Quantity"
           >
             <Package size={15} />
-            <span className="text-sm text-gray-50/80 ">{product.quantity}</span>
+            <span className="text-sm dark:text-gray-50/80 ">
+              {product.quantity}
+            </span>
           </div>
         </div>
       </div>

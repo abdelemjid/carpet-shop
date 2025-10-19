@@ -75,10 +75,10 @@ export const fetchProducts = async (
 
   searchQuery?.fromDate && query.append("fromDate", searchQuery.fromDate);
   searchQuery?.toDate && query.append("toDate", searchQuery.toDate);
-  if (searchQuery?.quantity && searchQuery.quantity.length > 0)
-    query.append("fromQuantity", searchQuery.quantity[0]);
-  if (searchQuery?.quantity && searchQuery.quantity.length > 1)
-    query.append("toQuantity", searchQuery.quantity[1]);
+  if (searchQuery?.quantity && searchQuery.quantity?.from)
+    query.append("fromQuantity", searchQuery.quantity.from);
+  if (searchQuery?.quantity && searchQuery.quantity.to)
+    query.append("toQuantity", searchQuery.quantity.to);
   searchQuery?.category && query.append("category", searchQuery.category);
   searchQuery?.page && query.append("page", searchQuery.page);
 

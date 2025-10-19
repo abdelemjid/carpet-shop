@@ -58,4 +58,4 @@
 #### Themes
 
 - [x] Dark Mode
-- [ ] Light Mode
+- [x] Light Mode

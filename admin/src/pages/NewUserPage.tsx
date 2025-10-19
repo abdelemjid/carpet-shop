@@ -15,7 +15,7 @@ const NewUserPage = () => {
 
   return (
     <div className="w-full flex flex-col justify-center items-center my-2">
-      <div className="container w-full h-full bg-gray-900/20  border border-gray-50/20 rounded-lg p-5 mx-auto lg:max-w-[80%]">
+      <div className="container w-full h-full border border-indigo-900/80 bg-indigo-900/20 dark:bg-gray-900/20 dark:border-gray-50/20 rounded-lg p-5 mx-auto lg:max-w-[80%]">
         <div className="flex flex-col gap-5 justify-center">
           {/* Form Heading */}
           <h1 className="text-2xl mb-5">Create New User</h1>

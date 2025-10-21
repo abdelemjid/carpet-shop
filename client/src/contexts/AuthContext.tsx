@@ -5,6 +5,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import * as apiClient from "@/apiClient";
+import { useQuery } from "@tanstack/react-query";
 
 interface User {
   id: string;
@@ -14,7 +16,8 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
+  isLoading: boolean;
+  isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
 }
@@ -25,38 +28,33 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const getCookie = (name: string): string | null => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
-  return null;
-};
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const { data, isLoading, isSuccess, isError } = useQuery({
+    queryKey: ["validate-token"],
+    queryFn: apiClient.validateToken,
+  });
 
   useEffect(() => {
-    const token = getCookie("auth_token");
-
-    if (!token) {
-      setUser(null);
-      setLoading(false);
-    }
-
-    // complete login here
-  }, []);
+    if (isSuccess) login(data);
+  }, [isAuthenticated, isSuccess, isError]);
 
   const login = (user: User) => {
     setUser(user);
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
     setUser(null);
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, isAuthenticated, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

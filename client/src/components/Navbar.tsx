@@ -1,12 +1,21 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import * as apiClient from "@/apiClient";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
-  const handleLogout = async () => {
-    //
-  };
+  const {
+    mutate: handleLogout,
+    isSuccess,
+    isPending,
+  } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: apiClient.logout,
+  });
+
+  if (isSuccess) logout();
 
   return (
     <div className="w-full bg-clip-padding backdrop-blur-lg bg-opacity-10 border-b border-gray-50/10">
@@ -50,10 +59,10 @@ const Navbar = () => {
             {/* Login Link  */}
             {user && (
               <button
-                onClick={handleLogout}
+                onClick={() => handleLogout()}
                 className="cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-50/20 px-3 py-1 rounded-sm"
               >
-                Logout
+                {isPending ? "Logging out" : "Logout"}
               </button>
             )}
           </div>

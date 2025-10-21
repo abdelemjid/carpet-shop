@@ -14,7 +14,7 @@ const Hero = () => {
       <div className="w-full h-full absolute z-10 p-8 bg-gradient-to-br from-blue-400/10 to-violet-500/85 bg-clip-padding backdrop-filter backdrop-blur bg-opacity-10  backdrop-contrast-[100%]">
         <div className="w-full flex flex-row gap-5 justify-between items-center">
           {/* Text Content */}
-          <div className="h-full flex flex-col gap-8">
+          <div className="h-full flex flex-col gap-8 text-gray-50">
             {/* Hero Heading */}
             <h1 className="text-3xl lg:text-5xl font-bold">
               Online - Carpet Store
@@ -33,7 +33,7 @@ const Hero = () => {
           <img
             src={woman}
             alt="moroccan woman"
-            className="hidden md:block w-[250px]"
+            className="hidden md:block w-[280px]"
           />
         </div>
       </div>

@@ -1,69 +1,26 @@
-import { useEffect, useState } from "react";
-
-interface ProductType {
-  _id?: string;
-  name?: string;
-  description?: string;
-  quantity?: number;
-  price?: number;
-  images?: string[];
-}
-
-const ProductItem = ({
-  name,
-  description,
-  quantity,
-  price,
-  images,
-}: ProductType) => {
-  return (
-    <div className="flex flex-col gap-3">
-      {/* Product Image */}
-      <img
-        src={images && images[0]}
-        alt="product image"
-        className="w-[250px] bg-cover"
-      />
-      {/* Product Name & Price */}
-      <div className="w-full flex flex-row justify-between">
-        <p className="text-sm">{name}</p>
-        <p className="text-lg">${price}</p>
-      </div>
-      {/* Produce Description  */}
-      <p className="w-full text-sm text-gray-50/50">{description}</p>
-      {/* Product Quantity */}
-      {quantity && <p className="">0/{quantity}</p>}
-    </div>
-  );
-};
+import { useQuery } from "@tanstack/react-query";
+import * as apiClient from "@/apiClient";
+import loading from "@/assets/loading.svg";
+import { ProductItem } from "../products/ProductItem";
 
 const ProductSection = () => {
-  const [products, setProducts] = useState<ProductType[] | null>(null);
+  const { data, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: apiClient.getProducts,
+  });
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch("/api/products", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) throw new Error("Error fetching products!");
-
-      const data = await response.json();
-
-      console.log(data.data);
-
-      setProducts(data.data as ProductType[]);
-    };
-
-    fetchProducts();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <img src={loading} className="w-[25px]" />
+      </div>
+    );
+  }
 
   return (
-    <div className="mt-10 flex flex-row gap-5 flex-wrap justify-center">
-      {products && products.map((product, _) => <ProductItem {...product} />)}
+    <div className="grid [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))] gap-5">
+      {data?.data &&
+        data.data?.map((product, _) => <ProductItem product={product} />)}
     </div>
   );
 };

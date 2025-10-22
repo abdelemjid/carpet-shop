@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import type { ProductsResponse } from "./types/product.type";
+import type { Product, ProductsResponse } from "./types/product.type";
 
 const API_BASE_URL = "http://localhost:5000";
 
@@ -55,4 +55,22 @@ export const getProducts = async (): Promise<ProductsResponse | null> => {
   }
 
   return result;
+};
+
+export const getProduct = async (
+  productId: string
+): Promise<Product | null> => {
+  const response = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    toast.error(result?.error || "Failed to fetch product!");
+    return null;
+  }
+
+  return result?.product;
 };

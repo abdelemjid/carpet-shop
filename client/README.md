@@ -12,17 +12,17 @@
 
 #### Products
 
-- [ ] Display Products
+- [x] Display Products
 - [ ] From -> To Date filter
 - [ ] Category filter
 - [ ] From -> To Quantity filter
 
 #### Cart
 
-- [ ] Add Order to Cart
-- [ ] Update Order in Cart
-- [ ] Read Orders from Cart
-- [ ] Delete Order from Cart
+- [x] Add Order to Cart
+- [x] Update Order in Cart
+- [x] Read Orders from Cart
+- [x] Delete Order from Cart
 
 #### Orders
 
@@ -31,8 +31,8 @@
 
 #### Authentication
 
-- [ ] Login
-- [ ] Logout
+- [x] Login
+- [x] Logout
 
 #### Themes
 

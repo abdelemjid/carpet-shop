@@ -3,11 +3,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Layout from "./layout/Layout";
-import { useAuth } from "./contexts/AuthContext";
+import ProductReview from "./pages/ProductReview";
 
 function App() {
-  const { user } = useAuth();
-
   return (
     <Routes>
       {/* Home Page */}
@@ -16,6 +14,15 @@ function App() {
         element={
           <Layout>
             <Home />
+          </Layout>
+        }
+      />
+      {/* Product Review */}
+      <Route
+        path="/product/:productId"
+        element={
+          <Layout>
+            <ProductReview />
           </Layout>
         }
       />

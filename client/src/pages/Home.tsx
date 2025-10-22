@@ -1,6 +1,6 @@
 import FeaturesSection from "../components/home/FeaturesSection";
-import Hero from "../components/home/Hero";
 import ProductSection from "../components/home/ProductSection";
+import Hero from "../components/home/Hero";
 
 const Home = () => {
   return (

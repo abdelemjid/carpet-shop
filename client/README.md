@@ -26,7 +26,7 @@
 
 #### Orders
 
-- [ ] Check our Orders
+- [ ] Check out Orders
 - [ ] Display Orders
 
 #### Authentication

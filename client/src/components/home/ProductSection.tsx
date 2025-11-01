@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "@/apiClient";
 import loading from "@/assets/loading.svg";
 import { ProductItem } from "../products/ProductItem";
-import { useAppContext } from "@/contexts/AppContext";
+import { useCartContext } from "@/contexts/CartContext";
 
 const ProductSection = () => {
-  const { handleAddToCart } = useAppContext();
+  const { addOrder } = useCartContext();
 
   const { data, isLoading } = useQuery({
     queryKey: ["products"],
@@ -21,10 +21,14 @@ const ProductSection = () => {
   }
 
   return (
-    <div className="grid [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))] gap-5">
+    <div className="my-10 grid [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))] gap-5">
       {data?.data &&
         data.data?.map((product, _) => (
-          <ProductItem product={product} handleAddToCart={handleAddToCart} />
+          <ProductItem
+            product={product}
+            handleAddToCart={addOrder}
+            key={product?._id}
+          />
         ))}
     </div>
   );

@@ -3,7 +3,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Layout from "./layout/Layout";
-import ProductReview from "./pages/ProductReview";
+import ProductPreview from "./pages/ProductPreview";
+import Cart from "./pages/Cart";
+import PublicOnlyRoute from "./components/PublicOnlyRoute";
 
 function App() {
   return (
@@ -22,7 +24,16 @@ function App() {
         path="/product/:productId"
         element={
           <Layout>
-            <ProductReview />
+            <ProductPreview />
+          </Layout>
+        }
+      />
+      {/* Cart Page */}
+      <Route
+        path="/cart"
+        element={
+          <Layout>
+            <Cart />
           </Layout>
         }
       />
@@ -30,22 +41,26 @@ function App() {
       <Route
         path="/register"
         element={
-          <Layout>
-            <Register />
-          </Layout>
+          <PublicOnlyRoute>
+            <Layout>
+              <Register />
+            </Layout>
+          </PublicOnlyRoute>
         }
       />
       {/* Login Page */}
       <Route
         path="/login"
         element={
-          <Layout>
-            <Login />
-          </Layout>
+          <PublicOnlyRoute>
+            <Layout>
+              <Login />
+            </Layout>
+          </PublicOnlyRoute>
         }
       />
       {/* Any other route path except the above will lead to the main page */}
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

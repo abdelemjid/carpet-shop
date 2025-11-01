@@ -14,14 +14,14 @@ import {
   Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAppContext } from "@/contexts/AppContext";
+import { useCartContext } from "@/contexts/CartContext";
 
-const ProductReview = () => {
+const ProductPreview = () => {
   const { productId } = useParams();
-  const { getItem, handleAddToCart, handleRemoveItem } = useAppContext();
+  const { addOrder, deleteOrder, getOrder } = useCartContext();
   const [currentImage, setCurrentImage] = useState(0);
   const [orderQuantity, setOrderQuantity] = useState<number>(
-    (productId && getItem(productId)?.orderQuantity) || 0
+    (productId && getOrder(productId)?.orderQuantity) || 0
   );
 
   const { data: product, isLoading } = useQuery({
@@ -120,16 +120,14 @@ const ProductReview = () => {
               {/* Add To Cart */}
               <Button
                 disabled={orderQuantity <= 0}
-                onClick={() =>
-                  product && handleAddToCart(product, orderQuantity)
-                }
+                onClick={() => product && addOrder(product, orderQuantity)}
                 className="flex flex-row gap-2 justify-center items-center"
               >
                 <ShoppingCart size={20} />
                 Add to Cart
               </Button>
               {/* Delete */}
-              <Button onClick={() => productId && handleRemoveItem(productId)}>
+              <Button onClick={() => productId && deleteOrder(productId)}>
                 <Trash2 size={20} className="text-red-500" />
               </Button>
             </div>
@@ -151,4 +149,4 @@ const ProductReview = () => {
   );
 };
 
-export default ProductReview;
+export default ProductPreview;

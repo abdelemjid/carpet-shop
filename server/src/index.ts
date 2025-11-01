@@ -10,6 +10,7 @@ import userRoute from './routes/admin/user.route';
 import orderRoute from './routes/user/order.route';
 import adminOrderRoute from './routes/admin/order.route';
 import statsRoute from './routes/admin/stats.route';
+import cartRoute from './routes/user/cart.route';
 
 dotenv.config();
 
@@ -62,6 +63,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoute);
 app.use('/api/products', productRoute);
+app.use('/api/cart', cartRoute);
 // admin routes
 app.use('/api/admin/users', userRoute);
 app.use('/api/admin/products', productRoute);

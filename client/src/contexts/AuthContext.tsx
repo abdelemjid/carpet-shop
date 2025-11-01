@@ -6,7 +6,8 @@ import {
   type ReactNode,
 } from "react";
 import * as apiClient from "@/apiClient";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface User {
   id: string;
@@ -32,14 +33,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const { data, isLoading, isSuccess, isError } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["validate-token"],
     queryFn: apiClient.validateToken,
   });
 
   useEffect(() => {
-    if (isSuccess) login(data);
-  }, [isAuthenticated, isSuccess, isError]);
+    if (isSuccess && data) login(data);
+  }, [isAuthenticated]);
 
   const login = (user: User) => {
     setUser(user);

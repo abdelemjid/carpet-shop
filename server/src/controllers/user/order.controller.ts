@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import orderModel from '../../models/order.model';
 import { FetchingOrdersConfig } from '../../config/fetching';
-import { Order, OrdersResponse } from '../../types/order.type';
+import { Order, OrdersResponse, RespOrder } from '../../types/order.type';
 import productModel from '../../models/product.model';
+import { Types } from 'mongoose';
 
 export const getMyOrders = async (req: Request, res: Response) => {
   try {
@@ -16,9 +17,43 @@ export const getMyOrders = async (req: Request, res: Response) => {
     const limit = Math.max(FetchingOrdersConfig.limit, 15);
     const skip = (page - 1) * limit;
 
+    const userObjectId = new Types.ObjectId(userId);
+
     const [orders, total] = await Promise.all([
-      await orderModel.find({ userId: userId }).skip(skip).limit(limit).lean<Order[]>(),
-      await orderModel.countDocuments({ userId: userId }),
+      orderModel.aggregate<RespOrder>([
+        { $match: { userId: userObjectId } },
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: limit },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'productId',
+            foreignField: '_id',
+            as: 'productInfo',
+            pipeline: [
+              {
+                $project: {
+                  name: 1,
+                  images: 1,
+                },
+              },
+            ],
+          },
+        },
+        {
+          $addFields: {
+            productDetails: { $arrayElemAt: ['$productInfo', 0] },
+          },
+        },
+        {
+          $project: {
+            productInfo: 0,
+          },
+        },
+      ]),
+
+      orderModel.countDocuments({ userId: userObjectId }),
     ]);
 
     const response: OrdersResponse = {

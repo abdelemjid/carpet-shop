@@ -15,8 +15,15 @@ export interface Order {
   refuseReason?: string;
 }
 
+export interface RespOrder extends Order {
+  productDetails?: {
+    name: string;
+    images: string[];
+  };
+}
+
 export interface OrdersResponse {
-  orders?: Order[];
+  orders?: RespOrder[];
   pagination?: {
     page: number;
     pages: number;

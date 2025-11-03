@@ -1,4 +1,4 @@
-import type { CartItem } from "@/types/order.type";
+import type { CartItem } from "@/types/cart.type";
 
 export class CartManager {
   private static CART_KEY = "offline_cart";

@@ -6,6 +6,8 @@ import Layout from "./layout/Layout";
 import ProductPreview from "./pages/ProductPreview";
 import Cart from "./pages/Cart";
 import PublicOnlyRoute from "./components/PublicOnlyRoute";
+import Orders from "./pages/Orders";
+import Products from "./pages/Products";
 
 function App() {
   return (
@@ -19,12 +21,30 @@ function App() {
           </Layout>
         }
       />
+      {/* Products Page */}
+      <Route
+        path="/products"
+        element={
+          <Layout>
+            <Products />
+          </Layout>
+        }
+      />
       {/* Product Review */}
       <Route
-        path="/product/:productId"
+        path="/products/:productId"
         element={
           <Layout>
             <ProductPreview />
+          </Layout>
+        }
+      />
+      {/* Orders Page */}
+      <Route
+        path="/orders"
+        element={
+          <Layout>
+            <Orders />
           </Layout>
         }
       />

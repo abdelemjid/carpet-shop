@@ -1,4 +1,4 @@
-import type { CartItem as CartItemType } from "@/types/order.type";
+import type { CartItem as CartItemType } from "@/types/cart.type";
 import { Button } from "../ui/button";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCartContext } from "@/contexts/CartContext";

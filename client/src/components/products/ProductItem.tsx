@@ -19,7 +19,7 @@ export const ProductItem = ({ product, handleAddToCart }: Props) => {
       />
       {/* Product Name & Price */}
       <div className="w-full flex flex-row justify-between">
-        <Link to={`/product/${product?._id}`}>
+        <Link to={`/products/${product?._id}`}>
           <p className="text-xs font-bold cursor-pointer">{product?.name}</p>
         </Link>
         <p className="text-xs font-semibold">${product?.price}</p>

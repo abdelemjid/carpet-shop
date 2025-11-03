@@ -1,6 +1,7 @@
+import OverviewSection from "@/components/home/OverviewSection";
 import FeaturesSection from "../components/home/FeaturesSection";
-import ProductSection from "../components/home/ProductSection";
-import Hero from "../components/home/Hero";
+import Hero from "../components/home/HeroSection";
+import AboutUsSection from "@/components/home/AboutUsSection";
 
 const Home = () => {
   return (
@@ -9,8 +10,10 @@ const Home = () => {
       <Hero />
       {/* Feature Section */}
       <FeaturesSection />
-      {/* Products Section */}
-      <ProductSection />
+      {/* Overview Section */}
+      <OverviewSection />
+      {/* About Us Section */}
+      <AboutUsSection />
     </div>
   );
 };

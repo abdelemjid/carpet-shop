@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useAppContext } from "@/contexts/AppContext";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const { getItemsCount } = useCartContext();
   const { navToggled, setNavToggled } = useAppContext();
 
@@ -61,14 +61,24 @@ const Navbar = () => {
                 )}
               </div>
             </NavLink>
-            {/* Orders Link */}
+            {/* Products Link */}
             <NavLink
-              to="/orders"
+              to="/products"
               end
               className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
             >
-              My Orders
+              Products
             </NavLink>
+            {/* Orders Link */}
+            {isAuthenticated && (
+              <NavLink
+                to="/orders"
+                end
+                className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
+              >
+                Orders
+              </NavLink>
+            )}
             {/* Register Link */}
             {!user && (
               <NavLink
@@ -129,14 +139,24 @@ const Navbar = () => {
                 )}
               </div>
             </NavLink>
-            {/* Orders Link */}
+            {/* Products Link */}
             <NavLink
-              to="/orders"
+              to="/products"
               end
               className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
             >
-              My Orders
+              Products
             </NavLink>
+            {/* Orders Link */}
+            {isAuthenticated && (
+              <NavLink
+                to="/orders"
+                end
+                className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
+              >
+                Orders
+              </NavLink>
+            )}
             {/* Register Link */}
             {!user && (
               <NavLink

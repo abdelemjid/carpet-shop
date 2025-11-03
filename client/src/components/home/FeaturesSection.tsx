@@ -36,7 +36,7 @@ const Feature = ({
 }) => {
   return (
     <div className="flex-1 flex flex-col gap-5 items-center">
-      <div className="w-full flex justify-center">{icon}</div>
+      <div className="w-full flex justify-center ">{icon}</div>
       <h2 className="text-lg">{heading}</h2>
       <p className="text-gray-50/50 text-sm text-center">{subheading}</p>
     </div>
@@ -45,7 +45,7 @@ const Feature = ({
 
 const FeaturesSection = () => {
   return (
-    <div className="w-full container mt-10 py-10 flex flex-row gap-8 justify-between">
+    <div className="w-full container mt-10 py-10 flex flex-col md:flex-row gap-8 justify-between">
       {data.map((feature, _) => (
         <Feature
           key={_}

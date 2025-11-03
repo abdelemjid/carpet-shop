@@ -1,5 +1,5 @@
-import carpet from "../../assets/carpet.jpg";
-import woman from "../../assets/moroccan.old.woman.png";
+import carpet from "../../assets/hero/hero_image.jpg";
+import woman from "../../assets/hero/moroccan.old.woman.png";
 
 const Hero = () => {
   return (
@@ -11,7 +11,7 @@ const Hero = () => {
         className="absolute w-full h-full bg-cover"
       />
       {/* Hero Content */}
-      <div className="w-full h-full absolute z-10 p-8 bg-gradient-to-br from-blue-400/10 to-violet-500/85 bg-clip-padding backdrop-filter backdrop-blur bg-opacity-10  backdrop-contrast-[100%]">
+      <div className="w-full h-full absolute z-10 p-8 bg-gradient-to-br from-blue-400/10 to-violet-500/85 bg-clip-padding backdrop-filter backdrop-blur-xs">
         <div className="w-full flex flex-row gap-5 justify-between items-center">
           {/* Text Content */}
           <div className="h-full flex flex-col gap-8 text-gray-50">

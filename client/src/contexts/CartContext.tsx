@@ -1,4 +1,4 @@
-import type { CartItem } from "@/types/order.type";
+import type { CartItem } from "@/types/cart.type";
 import type { Product } from "@/types/product.type";
 import { CartManager } from "@/utils/CartManager";
 import type React from "react";

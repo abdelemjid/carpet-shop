@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import type { Product, ProductsResponse } from "./types/product.type";
-import type { CartItem } from "./types/order.type";
+import type { CartItem } from "./types/cart.type";
+import type { OrdersResponse, OrderType } from "./types/order.type";
 
 const API_BASE_URL = "http://localhost:5000";
 
@@ -162,4 +163,21 @@ export const clearCart = async () => {
 
   if (!response.ok) toast.error(result?.error || "Failed to clear cart!");
   else toast.success(result?.message || "Cart is cleared");
+};
+
+/****************** Orders ******************/
+
+export const getOrders = async (): Promise<OrdersResponse | null> => {
+  const response = await fetch(`${API_BASE_URL}/api/orders`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result?.error || "Unauthorized fetching orders");
+  }
+
+  return result;
 };

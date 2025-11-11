@@ -8,6 +8,7 @@ export interface CartItem {
   productPrice: number;
   productImages: string[];
   orderQuantity: number;
+  confirmed: boolean;
   totalPrice?: number;
   createdAt?: Date;
 }

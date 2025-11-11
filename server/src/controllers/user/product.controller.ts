@@ -2,11 +2,8 @@ import type { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import ProductModel from '../../models/product.model';
 import { FetchingConfig } from '../../config/fetching';
-import { Category, ProductsResponse } from '../../types/product.type';
-import {
-  constructorProductsFilter,
-  ProductsSearchQuery,
-} from '../../filters/admin/products.filter';
+import { ProductsResponse } from '../../types/product.type';
+import { constructorProductsFilter, ProductsSearchQuery } from '../../filters/user/products.filter';
 
 /**
  * Function that fetches a product by its ID, permitted to [Everyone].

@@ -12,6 +12,31 @@ export interface ProductsSearchQuery {
   };
 }
 
+/**
+ * Constructs a MongoDB filter object for querying products based on date, quantity, and category ranges.
+ *
+ * @param searchQuery - Object containing optional filter fields:
+ *   - fromDate: Start date for product creation
+ *   - toDate: End date for product creation
+ *   - fromQuantity: Minimum product quantity (ignored if -1, undefined, or NaN)
+ *   - toQuantity: Maximum product quantity (ignored if -1, undefined, or NaN)
+ *   - category: Product category (ignored if 'default')
+ *
+ * @returns ProductsSearchQuery - MongoDB query object ready for use in find()
+ *
+ * Process:
+ * 1. Applies creation date range filters if `fromDate` or `toDate` are provided
+ * 2. Applies quantity range filters if `fromQuantity` or `toQuantity` are valid
+ * 3. Filters by category if provided and not 'default'
+ *
+ * @example
+ * const filter = constructorProductsFilter({
+ *   fromDate: '2025-11-01',
+ *   toQuantity: 50,
+ *   category: 'furniture'
+ * });
+ * Product.find(filter);
+ */
 export const constructorProductsFilter = (searchQuery: any) => {
   const query: ProductsSearchQuery = {};
 

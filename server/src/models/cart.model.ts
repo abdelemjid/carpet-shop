@@ -10,6 +10,7 @@ const cartModel = new Schema<CartItem>(
     productName: { type: String, required: true },
     productPrice: { type: Number, required: true },
     totalPrice: { type: Number, required: false },
+    confirmed: { type: Boolean, required: true, default: false },
   },
   { timestamps: true },
 );

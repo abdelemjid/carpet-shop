@@ -11,6 +11,7 @@ import orderRoute from './routes/user/order.route';
 import adminOrderRoute from './routes/admin/order.route';
 import statsRoute from './routes/admin/stats.route';
 import cartRoute from './routes/user/cart.route';
+import checkoutRoute from './routes/user/checkout.route';
 
 dotenv.config();
 
@@ -59,11 +60,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// app routes
+// user routes
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoute);
 app.use('/api/products', productRoute);
 app.use('/api/cart', cartRoute);
+app.use('/api/checkout', checkoutRoute);
 // admin routes
 app.use('/api/admin/users', userRoute);
 app.use('/api/admin/products', productRoute);

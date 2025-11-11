@@ -2,6 +2,22 @@ import { Request, Response } from 'express';
 import userModel from '../../models/user.model';
 import { User } from '../../types/user.type';
 
+/**
+ * Retrieves the authenticated user's profile information.
+ *
+ * @param req.userId - Authenticated user's ID (from middleware)
+ *
+ * @returns 200 - User object
+ * @returns 400 - User ID missing (authentication failed)
+ * @returns 404 - User not found in database
+ * @returns 500 - Server error
+ *
+ * Returns the complete user profile for the authenticated user.
+ *
+ * @example
+ * GET /user
+ * Response: { _id: "...", email: "user@example.com", username: "john_doe", ... }
+ */
 export const getUser = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;

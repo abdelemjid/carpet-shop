@@ -23,3 +23,11 @@ export interface ProductsResponse {
     hasPrev?: boolean;
   };
 }
+
+export interface ProductsSearchQuery {
+  query?: string;
+  category?: string;
+  quantity?: number;
+  date?: string;
+  page?: number;
+}

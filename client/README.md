@@ -13,12 +13,14 @@
 #### Products
 
 - [x] Display Products
-- [ ] From -> To Date filter
-- [ ] Category filter
-- [ ] From -> To Quantity filter
+- [x] From -> To Date filter
+- [x] Category filter
+- [x] From -> To Quantity filter
 
 #### Cart
 
+- [x] Local cart
+- [x] Remote cart
 - [x] Add Order to Cart
 - [x] Update Order in Cart
 - [x] Read Orders from Cart
@@ -26,8 +28,12 @@
 
 #### Orders
 
-- [ ] Check out Orders
-- [ ] Display Orders
+- [x] Check out Orders
+- [x] Display Orders
+
+### Payment gateway (Stripe)
+
+- [ ] Add the Stripe payment gateway
 
 #### Authentication
 
@@ -36,5 +42,10 @@
 
 #### Themes
 
-- [ ] Dark Mode
+- [x] Dark Mode
 - [ ] Light Mode
+
+### Responsive
+
+- [x] Mobile & Tab
+- [x] Medium & Large Screen

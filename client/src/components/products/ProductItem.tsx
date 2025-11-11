@@ -10,7 +10,7 @@ interface Props {
 
 export const ProductItem = ({ product, handleAddToCart }: Props) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="max-w-[280px] flex flex-col gap-3">
       {/* Product Image */}
       <img
         src={product?.images && product?.images?.at(0)}
@@ -20,7 +20,9 @@ export const ProductItem = ({ product, handleAddToCart }: Props) => {
       {/* Product Name & Price */}
       <div className="w-full flex flex-row justify-between">
         <Link to={`/products/${product?._id}`}>
-          <p className="text-xs font-bold cursor-pointer">{product?.name}</p>
+          <p className="text-xs font-bold cursor-pointer line-clamp-1">
+            {product?.name}
+          </p>
         </Link>
         <p className="text-xs font-semibold">${product?.price}</p>
       </div>

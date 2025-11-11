@@ -15,7 +15,7 @@ import { Button } from "../ui/button";
 
 const OverviewSection = () => {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnMouseEnter: true, active: true })
   );
 
   return (
@@ -25,13 +25,13 @@ const OverviewSection = () => {
       {/* Carousel */}
       <Carousel
         plugins={[plugin.current]}
-        className="w-full"
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
+        className="mx-auto w-[calc(100%-95px)]"
       >
         <CarouselContent>
           {/* Living Room Carousel */}
-          <CarouselItem key="living-room-car">
+          <CarouselItem key="living-room-card">
             <div className="p-1">
               <Card className="bg-transparent">
                 <CardContent className="flex flex-col md:flex-row items-center justify-between gap-8 p-6">
@@ -50,7 +50,7 @@ const OverviewSection = () => {
             </div>
           </CarouselItem>
           {/* Dining Room Carousel */}
-          <CarouselItem key="living-room-car">
+          <CarouselItem key="dining-room-card">
             <div className="p-1">
               <Card className="bg-transparent">
                 <CardContent className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 p-6">
@@ -69,7 +69,7 @@ const OverviewSection = () => {
             </div>
           </CarouselItem>
           {/* Living Room Carousel */}
-          <CarouselItem key="living-room-car">
+          <CarouselItem key="bedroom-card">
             <div className="p-1">
               <Card className="bg-transparent">
                 <CardContent className="flex flex-col md:flex-row items-center justify-between gap-8 p-6">

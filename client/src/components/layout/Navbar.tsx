@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMutation } from "@tanstack/react-query";
-import * as apiClient from "@/apiClient";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { useCartContext } from "@/contexts/CartContext";
 import { useEffect } from "react";
 import { useAppContext } from "@/contexts/AppContext";
+import { ApiClient } from "@/utils/ApiClient";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -19,7 +19,7 @@ const Navbar = () => {
     isPending,
   } = useMutation({
     mutationKey: ["logout"],
-    mutationFn: apiClient.logout,
+    mutationFn: ApiClient.logout,
   });
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Navbar = () => {
               className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
             >
               <div className="relative">
-                <ShoppingCart />
+                <ShoppingCart size={18} />
                 {!!getItemsCount() && (
                   <span className="absolute -top-2 -right-4 w-[20px] h-[20px] p-2 rounded-full bg-red-400 flex justify-center items-center text-white text-xs">
                     {getItemsCount() > 99 ? "99+" : getItemsCount()}
@@ -77,16 +77,6 @@ const Navbar = () => {
                 className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
               >
                 Orders
-              </NavLink>
-            )}
-            {/* Register Link */}
-            {!user && (
-              <NavLink
-                to="/register"
-                end
-                className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
-              >
-                Register
               </NavLink>
             )}
             {/* Login Link  */}
@@ -131,7 +121,7 @@ const Navbar = () => {
               className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
             >
               <div className="relative">
-                <ShoppingCart />
+                <ShoppingCart size={18} />
                 {!!getItemsCount() && (
                   <span className="absolute -top-2 -right-4 w-[20px] h-[20px] p-2 rounded-full bg-red-400 flex justify-center items-center text-white text-xs">
                     {getItemsCount() > 99 ? "99+" : getItemsCount()}
@@ -155,16 +145,6 @@ const Navbar = () => {
                 className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
               >
                 Orders
-              </NavLink>
-            )}
-            {/* Register Link */}
-            {!user && (
-              <NavLink
-                to="/register"
-                end
-                className="transition-colors duration-150 ease-in-out hover:text-indigo-500 dark:hover:text-indigo-400 px-3 py-1"
-              >
-                Register
               </NavLink>
             )}
             {/* Login Link  */}

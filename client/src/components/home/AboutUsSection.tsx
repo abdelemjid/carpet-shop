@@ -48,31 +48,37 @@ const AboutUsSection = () => {
           className="flex-col md:flex-row"
           image={about0}
           paragraph={paragraphs[0]}
+          key={"about-0"}
         />
         <Section
           className="flex-col md:flex-row-reverse"
           image={about1}
           paragraph={paragraphs[1]}
+          key={"about-1"}
         />
         <Section
           className="flex-col md:flex-row"
           image={about2}
           paragraph={paragraphs[2]}
+          key={"about-2"}
         />
         <Section
           className="flex-col md:flex-row-reverse"
           image={about3}
           paragraph={paragraphs[3]}
+          key={"about-3"}
         />
         <Section
           className="flex-col md:flex-row"
           image={about4}
           paragraph={paragraphs[4]}
+          key={"about-4"}
         />
         <Section
           className="flex-col md:flex-row-reverse"
           image={about5}
           paragraph={paragraphs[5]}
+          key={"about-5"}
         />
       </div>
     </div>

@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import * as apiClient from "@/apiClient";
 import loading from "@/assets/loading.svg";
 import OrderItem from "@/components/orders/OrderItem";
+import { ApiClient } from "@/utils/ApiClient";
 
 const Orders = () => {
   const { data: orders, isLoading } = useQuery({
     queryKey: ["orders"],
-    queryFn: apiClient.getOrders,
+    queryFn: ApiClient.getOrders,
   });
 
   if (isLoading) {

@@ -5,9 +5,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import * as apiClient from "@/apiClient";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { ApiClient } from "@/utils/ApiClient";
 
 interface User {
   id: string;
@@ -33,14 +32,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const { data, isLoading, isSuccess } = useQuery({
+  const { data, isLoading, isSuccess, refetch } = useQuery({
     queryKey: ["validate-token"],
-    queryFn: apiClient.validateToken,
+    queryFn: ApiClient.validateToken,
   });
 
   useEffect(() => {
     if (isSuccess && data) login(data);
-  }, [isAuthenticated]);
+  }, [isAuthenticated, data, isLoading]);
 
   const login = (user: User) => {
     setUser(user);
@@ -50,6 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
+    refetch();
   };
 
   return (

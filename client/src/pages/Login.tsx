@@ -1,174 +1,277 @@
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useForm, type AnyFieldApi } from "@tanstack/react-form";
-import { useState } from "react";
 import loading from "../assets/loading.svg";
+import { useForm } from "react-hook-form";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import { ApiClient } from "@/utils/ApiClient";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { useState } from "react";
 
-const FieldInfo = ({ field }: { field: AnyFieldApi }) => {
-  return (
-    <div className="">
-      {field.state.meta.isTouched && !field.state.meta.isValid ? (
-        <em>{field.state.meta.errors.join(", ")}</em>
-      ) : null}
-    </div>
-  );
-};
+type AuthType = "login" | "register";
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+interface RegisterForm {
+  username: string;
+  email: string;
+  password: string;
+}
 
 const Login = () => {
-  const [error, setError] = useState<string | null>(null);
+  const [authType, setAuthType] = useState<AuthType>("login");
+  // login form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>();
+  // register form
+  const {
+    register: registerRegister,
+    handleSubmit: registerHandleSubmit,
+    formState: { errors: registerErrors },
+  } = useForm<RegisterForm>();
   const navigate = useNavigate();
   const { login } = useAuth();
-
-  const form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: async ({ value }) => {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(value),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error);
-        throw new Error("Login failed!");
-      }
-
-      login(data);
-      navigate("/", { replace: true });
-    },
+  // login mutation
+  const {
+    mutate: loginUser,
+    isPending: isLoginPending,
+    data: loginData,
+  } = useMutation({ mutationKey: ["login"], mutationFn: ApiClient.loginUser });
+  // register mutation
+  const {
+    mutate: registerUser,
+    isPending: isRegisterPending,
+    data: registerData,
+  } = useMutation({
+    mutationKey: ["register"],
+    mutationFn: ApiClient.RegisterUser,
   });
 
+  const loginHandler = async (value: any) => {
+    loginUser(value);
+  };
+
+  const handleRegister = async (value: any) => {
+    registerUser(value);
+  };
+
+  if (!isRegisterPending && !isLoginPending && (loginData || registerData)) {
+    login(loginData || registerData);
+    navigate("/", { replace: true });
+  }
+
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="min-w-[400px] flex flex-col bg-gray-50/10 bg-clip-padding backdrop-blur-md rounded-md px-5 py-5 border border-gray-50/50">
-        {/* Login Heading */}
-        <h1 className="w-full text-2xl mb-10">Login</h1>
-        {/* Error Label */}
-        {error && (
-          <span className="max-w-fit text-xs text-red-400 font-semibold flex-wrap my-3">
-            {error}
-          </span>
-        )}
-        {/* Login Form  */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            form.handleSubmit();
-          }}
+    <div className="w-full flex flex-col justify-center items-center gap-3 transition-discrete duration-200">
+      {/* Button Group */}
+      <ButtonGroup className="min-w-[400px]">
+        <Button
+          variant={authType === "login" ? "default" : "outline"}
+          onClick={() => setAuthType("login")}
+          className={`min-w-[200px] ${
+            authType === "login"
+              ? "bg-indigo-500 dark:text-white text-gray-950 hover:bg-indigo-600"
+              : ""
+          }`}
         >
-          <div className="flex flex-col space-y-2">
-            {/* Email Input */}
-            <div className="flex flex-col">
-              <form.Field
-                name="email"
-                validators={{
-                  onChange: ({ value }) =>
-                    !value ? "Email address is required" : undefined,
-                  onChangeAsyncDebounceMs: 500,
-                  onChangeAsync: async ({ value }) => {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
-                    return (
-                      value.includes("error") && "Please enter a valid Email!"
-                    );
-                  },
-                }}
-                children={(field) => {
-                  return (
-                    <>
-                      {/* Email Label  */}
-                      <label htmlFor={field.name} className="text-xs ">
-                        Email
-                      </label>
-                      {/* Email Field */}
-                      <input
-                        id={field.name}
-                        name={field.name}
-                        type="email"
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        className="w-full outline-none px-3 py-1 border border-gray-50/10 rounded-sm bg-gray-50/20 transition-all duration-150 ease-in-out focus:border-blue-50/80"
-                      />
-                      {/* Field Info */}
-                      <span className="w-full text-xs text-red-400">
-                        <FieldInfo field={field} />
-                      </span>
-                    </>
-                  );
-                }}
-              ></form.Field>
+          Login
+        </Button>
+        <Button
+          variant={authType === "register" ? "default" : "outline"}
+          onClick={() => setAuthType("register")}
+          className={`${
+            authType === "register"
+              ? "bg-indigo-500 dark:text-white text-gray-950 hover:bg-indigo-600"
+              : ""
+          } min-w-[200px]`}
+        >
+          Register
+        </Button>
+      </ButtonGroup>
+      {/* Form Selection */}
+      {authType === "login" ? (
+        <Card className="min-w-[400px] p-5">
+          {/* Login Heading */}
+          <h1 className="w-full text-2xl mb-6">Login</h1>
+
+          {/* Login Form  */}
+          <form onSubmit={handleSubmit(loginHandler)}>
+            <div className="flex flex-col gap-2">
+              {/* Email Input */}
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold">Email</label>
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  {...register("email", {
+                    required: {
+                      value: true,
+                      message: "* Email address is required for login!",
+                    },
+                    validate: (value) => {
+                      if (
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+                          value
+                        )
+                      )
+                        return true;
+                      return "* Please enter a valid Email address!";
+                    },
+                  })}
+                />
+                {errors?.email && (
+                  <span className="text-red-400 text-xs">
+                    {errors?.email?.message}
+                  </span>
+                )}
+              </div>
+              {/* Password Input */}
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold">Password</label>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  {...register("password", {
+                    required: {
+                      value: true,
+                      message: "* Password is required for login!",
+                    },
+                    validate: (value) => {
+                      return (
+                        value.length >= 8 ||
+                        "* Please enter a valid password (at least 8 characters)!"
+                      );
+                    },
+                  })}
+                />
+                {errors?.password && (
+                  <span className="text-red-400 text-xs">
+                    {errors?.password?.message}
+                  </span>
+                )}
+              </div>
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                className="cursor-pointer mt-3 bg-indigo-500 text-white hover:bg-indigo-600"
+              >
+                {isLoginPending ? (
+                  <img src={loading} className="w-[15px]" />
+                ) : (
+                  "Login"
+                )}
+              </Button>
             </div>
-            {/* Password Input */}
-            <div className="">
-              <form.Field
-                name="password"
-                validators={{
-                  onChange: ({ value }) =>
-                    !value ? "Password is required" : undefined,
-                  onChangeAsyncDebounceMs: 500,
-                  onChangeAsync: async ({ value }) => {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
-                    return (
-                      value.includes("error") &&
-                      "Password field is required! should not contains any errors"
-                    );
-                  },
-                }}
-                children={(field) => {
-                  return (
-                    <>
-                      {/* Password Label  */}
-                      <label htmlFor={field.name} className="text-xs ">
-                        Password
-                      </label>
-                      {/* Password Field */}
-                      <input
-                        id={field.name}
-                        name={field.name}
-                        type="password"
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        className="w-full outline-none px-3 py-1 border border-gray-50/10 rounded-sm bg-gray-50/20  transition-all duration-150 ease-in-out focus:border-blue-50/80"
-                      />
-                      {/* Field Info */}
-                      <span className="w-full text-xs text-red-400">
-                        <FieldInfo field={field} />
-                      </span>
-                    </>
-                  );
-                }}
-              ></form.Field>
-            </div>
-            {/* Submit Button */}
-            <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-              children={([canSubmit, isSubmitting]) => (
-                <button
-                  type="submit"
-                  disabled={!canSubmit}
-                  className="flex justify-center items-center mt-5 w-full bg-blue-400 rounded-md px-3 py-1 transition-all duration-150 ease-in-out hover:bg-blue-500 cursor-pointer"
-                >
-                  {isSubmitting ? (
-                    <img src={loading} alt="loading gif" className="w-[25px]" />
-                  ) : (
-                    "Login"
+          </form>
+        </Card>
+      ) : (
+        <Card className="min-w-[400px] p-5">
+          <div>
+            {/* Login Heading */}
+            <h1 className="w-full text-2xl mb-6">Sign Up</h1>
+
+            {/* Login Form  */}
+            <form onSubmit={registerHandleSubmit(handleRegister)}>
+              <div className="flex flex-col gap-3">
+                {/* Username Input */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold">Username</label>
+                  <Input
+                    type="text"
+                    placeholder="Username"
+                    {...registerRegister("username", {
+                      required: {
+                        value: true,
+                        message: "* Username is require to register!",
+                      },
+                      validate: (value) => {
+                        return (
+                          (value.length >= 4 && value.length < 30) ||
+                          "* Please enter a valid username!"
+                        );
+                      },
+                    })}
+                  />
+                  {registerErrors?.username && (
+                    <span className="text-xs text-red-400">
+                      {registerErrors?.username?.message}
+                    </span>
                   )}
-                </button>
-              )}
-            />
+                </div>
+                {/* Email Input */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold">Email</label>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    {...registerRegister("email", {
+                      required: {
+                        value: true,
+                        message: "* Email address is require to register!",
+                      },
+                      validate: (value) => {
+                        if (
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+                            value
+                          )
+                        )
+                          return true;
+                        return "* Please enter a valid Email address!";
+                      },
+                    })}
+                  />
+                  {registerErrors?.email && (
+                    <span className="text-xs text-red-400">
+                      {registerErrors?.email?.message}
+                    </span>
+                  )}
+                </div>
+                {/* Password Input */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold">Password</label>
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    {...registerRegister("password", {
+                      required: {
+                        value: true,
+                        message: "* Password is require to register!",
+                      },
+                      validate: (value) => {
+                        return (
+                          (value.length >= 8 && value.length <= 30) ||
+                          "* Password supposed to be (8 characters or more)"
+                        );
+                      },
+                    })}
+                  />
+                  {registerErrors?.password && (
+                    <span className="text-xs text-red-400">
+                      {registerErrors?.password?.message}
+                    </span>
+                  )}
+                </div>
+
+                {/* Register Button */}
+                <Button className="cursor-pointer mt-3 bg-indigo-500 hover:bg-indigo-600 text-white">
+                  {isRegisterPending ? (
+                    <img src={loading} className="w-[15px]" />
+                  ) : (
+                    "Register"
+                  )}
+                </Button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
+        </Card>
+      )}
     </div>
   );
 };

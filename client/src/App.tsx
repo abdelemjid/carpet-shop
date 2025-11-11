@@ -1,13 +1,15 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Layout from "./layout/Layout";
 import ProductPreview from "./pages/ProductPreview";
 import Cart from "./pages/Cart";
 import PublicOnlyRoute from "./components/PublicOnlyRoute";
 import Orders from "./pages/Orders";
 import Products from "./pages/Products";
+import { SearchFilterProvider } from "./contexts/SearchAndFiltersContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -26,7 +28,9 @@ function App() {
         path="/products"
         element={
           <Layout>
-            <Products />
+            <SearchFilterProvider>
+              <Products />
+            </SearchFilterProvider>
           </Layout>
         }
       />
@@ -43,9 +47,22 @@ function App() {
       <Route
         path="/orders"
         element={
-          <Layout>
-            <Orders />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Orders />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      {/* Checkout Page */}
+      <Route
+        path="/checkout"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <CheckoutPage />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       {/* Cart Page */}
@@ -57,18 +74,7 @@ function App() {
           </Layout>
         }
       />
-      {/* Register Page */}
-      <Route
-        path="/register"
-        element={
-          <PublicOnlyRoute>
-            <Layout>
-              <Register />
-            </Layout>
-          </PublicOnlyRoute>
-        }
-      />
-      {/* Login Page */}
+      {/* Login & Register Page */}
       <Route
         path="/login"
         element={

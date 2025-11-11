@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import loading from "@/assets/loading.svg";
-import * as apiClient from "@/apiClient";
 import { useState } from "react";
 import ZoomImage from "@/components/products/ZoomImage";
 import {
@@ -15,6 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartContext } from "@/contexts/CartContext";
+import { ApiClient } from "@/utils/ApiClient";
 
 const ProductPreview = () => {
   const { productId } = useParams();
@@ -26,7 +26,7 @@ const ProductPreview = () => {
 
   const { data: product, isLoading } = useQuery({
     queryKey: [`product-${productId}`],
-    queryFn: () => apiClient.getProduct(productId || ""),
+    queryFn: () => ApiClient.getProduct(productId || ""),
   });
 
   if (isLoading) {

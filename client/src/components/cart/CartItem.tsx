@@ -2,13 +2,24 @@ import type { CartItem as CartItemType } from "@/types/cart.type";
 import { Button } from "../ui/button";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCartContext } from "@/contexts/CartContext";
+import { Card } from "../ui/card";
+import { Checkbox } from "../ui/checkbox";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
   order: CartItemType;
 }
 
 const CartItem = ({ order }: Props) => {
-  const { updateOrderQuantity, deleteOrder } = useCartContext();
+  const {
+    updateOrderQuantity,
+    deleteOrder,
+    isSelected,
+    selectItem,
+    unselectItem,
+  } = useCartContext();
+
+  const { isAuthenticated } = useAuth();
 
   const handleDecrement = () => {
     if (order.orderQuantity > 0) {
@@ -21,8 +32,18 @@ const CartItem = ({ order }: Props) => {
   };
 
   return (
-    <div className="w-full rounded-md shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-indigo-500/50 bg-indigo-500/10">
+    <Card className="w-full p-0">
       <div className="flex flex-col sm:flex-row gap-4 p-4">
+        {isAuthenticated && (
+          <Checkbox
+            checked={isSelected(order?.productId || "")}
+            onCheckedChange={(checked) =>
+              checked
+                ? selectItem(order?.productId || "")
+                : unselectItem(order?.productId || "")
+            }
+          />
+        )}
         {/* Product Image */}
         <div className="w-full sm:w-32 sm:h-32 flex-shrink-0">
           <img
@@ -107,7 +128,7 @@ const CartItem = ({ order }: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

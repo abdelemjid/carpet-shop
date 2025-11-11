@@ -4,8 +4,8 @@ import { CartManager } from "@/utils/CartManager";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
-import * as apiClient from "@/apiClient";
 import { useMutation } from "@tanstack/react-query";
+import { ApiClient } from "@/utils/ApiClient";
 
 interface Props {
   children: React.ReactNode;
@@ -14,11 +14,17 @@ interface Props {
 interface CartContextType {
   updateOrderQuantity: (productId: string, quantity: number) => void;
   deleteOrder: (productId: string) => void;
+  deleteOrders: (productIds: string[]) => void;
   addOrder: (order: Product, quantity?: number) => void;
   getOrder: (productId: string) => CartItem | null;
   clearCart: () => void;
   getTotal: () => number;
   getItemsCount: () => number;
+  selectedItems: string[];
+  setSelectedItems: (items: string[]) => void;
+  selectItem: (id: string) => void;
+  unselectItem: (id: string) => void;
+  isSelected: (id: string) => boolean;
   cart: CartItem[] | undefined;
 }
 
@@ -28,12 +34,25 @@ export const CartContextProvider = ({ children }: Props) => {
   const [cart, setCart] = useState<CartItem[] | undefined>(
     CartManager.getCart()
   );
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const { isAuthenticated, user } = useAuth();
 
   const { mutate: updateRemoteCart } = useMutation({
     mutationKey: ["cart"],
-    mutationFn: apiClient.setCart,
+    mutationFn: ApiClient.setCart,
   });
+
+  const selectItem = (id: string) => {
+    if (!selectedItems.includes(id)) setSelectedItems([id, ...selectedItems]);
+  };
+
+  const unselectItem = (id: string) => {
+    setSelectedItems([...selectedItems.filter((item) => item !== id)]);
+  };
+
+  const isSelected = (id: string) => {
+    return selectedItems.includes(id);
+  };
 
   // --- Helper: merge two carts (local + remote) by productId ---
   const mergeCarts = (local: CartItem[], remote: CartItem[]): CartItem[] => {
@@ -64,13 +83,13 @@ export const CartContextProvider = ({ children }: Props) => {
 
     (async () => {
       try {
-        const remoteCart = await apiClient.getCart();
+        const remoteCart = await ApiClient.getCart();
 
         if (
           !remoteCart ||
           (remoteCart.length === 0 && cart && cart?.length > 0)
         ) {
-          cart && (await apiClient.setCart(cart));
+          cart && (await ApiClient.setCart(cart));
         } else if (remoteCart && remoteCart.length > 0 && cart?.length === 0) {
           setCart(remoteCart);
         } else if (
@@ -81,7 +100,7 @@ export const CartContextProvider = ({ children }: Props) => {
         ) {
           const merged = mergeCarts(cart, remoteCart);
           setCart(merged);
-          await apiClient.setCart(merged);
+          await ApiClient.setCart(merged);
         }
       } catch (error) {
         console.error("Cart Sync Failed:", error);
@@ -109,6 +128,11 @@ export const CartContextProvider = ({ children }: Props) => {
 
   const deleteOrder = (productId: string) => {
     setCart(cart?.filter((item) => item?.productId !== productId));
+  };
+
+  const deleteOrders = (productIds: string[]) => {
+    const items = cart?.filter((item) => !productIds.includes(item?.productId));
+    setCart(items);
   };
 
   const addOrder = (order: Product, quantity: number = 1) => {
@@ -162,10 +186,16 @@ export const CartContextProvider = ({ children }: Props) => {
         addOrder,
         clearCart,
         deleteOrder,
+        deleteOrders,
         getItemsCount,
         getOrder,
         getTotal,
         updateOrderQuantity,
+        selectedItems,
+        setSelectedItems,
+        selectItem,
+        unselectItem,
+        isSelected,
         cart,
       }}
     >

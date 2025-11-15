@@ -11,7 +11,7 @@ import { useCartContext } from "@/contexts/CartContext";
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { deleteOrders } = useCartContext();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const {
     register,
     reset,

@@ -8,7 +8,7 @@ import { ApiClient } from "@/utils/ApiClient";
 
 const Products = () => {
   const { addOrder } = useCartContext();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // Extract search params
   const page = searchParams.get("page") || "1";

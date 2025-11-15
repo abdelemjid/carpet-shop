@@ -13,7 +13,7 @@ interface Props {
   product?: Product;
   onSave: (productData: FormData) => void;
   isLoading: boolean;
-  showDeleteDialog: () => void;
+  showDeleteDialog?: () => void;
 }
 
 export const ManageProduct = ({
@@ -68,7 +68,7 @@ export const ManageProduct = ({
           {product && (
             <Button
               disabled={isLoading}
-              onClick={() => showDeleteDialog()}
+              onClick={() => showDeleteDialog && showDeleteDialog()}
               variant="outline"
               type="button"
               className="flex-1 text-red-500 cursor-pointer"

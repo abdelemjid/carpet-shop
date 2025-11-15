@@ -8,11 +8,7 @@ import { Button } from "@/components/ui/button";
 import UserStatusSelector from "./UserStatusSelector";
 import { useEffect } from "react";
 
-interface Props {
-  user: User;
-}
-
-const UserDetails = ({ user }: Props) => {
+const UserDetails = () => {
   const {
     register,
     formState: { errors },
@@ -155,7 +151,7 @@ const UserDetailsForm = ({ user, onSave, handleDelete }: FormProps) => {
               )}
             </div>
             {/* Other Details */}
-            <UserDetails user={user} />
+            <UserDetails />
             {/* Update Button */}
             <div className="flex flex-col md:flex-row gap-2">
               {/* Delete Button */}

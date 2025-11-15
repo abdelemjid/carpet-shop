@@ -36,16 +36,20 @@ export interface UsersFilterQuery {
 export const constructUsersFilterQuery = (searchParams: any) => {
   const query: UsersFilterQuery = {};
 
-  if (searchParams.joinDateFrom) {
-    if (query.createdAt) query.createdAt.$gte = new Date(searchParams.joinDateFrom);
-    else query.createdAt = { $gte: new Date(searchParams.joinDateFrom) };
+  if (searchParams.joinDateFrom || searchParams.joinDateTo) {
+    query.createdAt = {
+      ...(searchParams.joinDateFrom && { $gte: new Date(searchParams.joinDateFrom) }),
+      ...(searchParams.joinDateTo && { $lte: new Date(searchParams.joinDateTo) }),
+    };
   }
-  if (searchParams.joinDateTo) {
-    if (query.createdAt) query.createdAt.$lte = new Date(searchParams.joinDateTo);
-    else query.createdAt = { $lte: new Date(searchParams.joinDateTo) };
+
+  if (searchParams.banned) {
+    query.banned = searchParams.banned === 'true';
   }
-  if (searchParams.banned) query.banned = searchParams.banned === 'true' ? true : false;
-  if (searchParams.role) query.role = searchParams.role;
+
+  if (searchParams.role) {
+    query.role = searchParams.role;
+  }
 
   return query;
 };

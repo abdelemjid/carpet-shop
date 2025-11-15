@@ -78,8 +78,7 @@ export const constructorProductsFilter = (searchQuery: any) => {
       query.quantity.$lte = parseInt(searchQuery.toQuantity.toString());
     }
   }
-  if (searchQuery.category && searchQuery.category !== 'default')
-    query.category = searchQuery.category as Category;
+  if (searchQuery.category) query.category = searchQuery.category as Category;
 
   return query;
 };

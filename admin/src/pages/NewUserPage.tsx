@@ -1,12 +1,12 @@
 import NewUserForm from "@/forms/NewUser/NewUserForm";
 import type { UserAccount } from "@/types/user.type";
+import { ApiClient } from "@/utils/ApiClient";
 import { useMutation } from "@tanstack/react-query";
-import * as apiClient from "@/apiClient";
 
 const NewUserPage = () => {
   const { isPending, mutate: createUser } = useMutation({
     mutationKey: ["create-user"],
-    mutationFn: apiClient.createUser,
+    mutationFn: ApiClient.createUser,
   });
 
   const onSave = async (user: UserAccount) => {

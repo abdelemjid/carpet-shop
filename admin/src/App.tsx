@@ -12,6 +12,10 @@ import EditProduct from "./pages/EditProduct";
 import UserOrders from "./pages/UserOrders";
 import NewUserPage from "./pages/NewUserPage";
 import { PublicOnlyRoute } from "./components/PublicOnlyRoute";
+import { ProductsContextProvider } from "./contexts/products/ProductsFilter";
+import { HomeFilterContextProvider } from "./contexts/home/HomeFilterContext";
+import { OrdersFilterContextProvider } from "./contexts/orders/OrdersFilterContext";
+import { UsersFilterContextProvider } from "./contexts/user/UsersFilterContext";
 
 function App() {
   return (
@@ -21,7 +25,11 @@ function App() {
         path="/admin"
         element={
           <ProtectedRoute>
-            <Layout>{<HomePage />}</Layout>
+            <Layout>
+              <HomeFilterContextProvider>
+                <HomePage />
+              </HomeFilterContextProvider>
+            </Layout>
           </ProtectedRoute>
         }
       />
@@ -33,7 +41,9 @@ function App() {
           <ProtectedRoute>
             <Layout>
               <ImageViewProvider>
-                <ProductsPage />
+                <ProductsContextProvider>
+                  <ProductsPage />
+                </ProductsContextProvider>
               </ImageViewProvider>
             </Layout>
           </ProtectedRoute>
@@ -62,7 +72,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <OrdersPage />
+              <OrdersFilterContextProvider>
+                <OrdersPage />
+              </OrdersFilterContextProvider>
             </Layout>
           </ProtectedRoute>
         }
@@ -74,7 +86,9 @@ function App() {
         element={
           <ProtectedRoute>
             <Layout>
-              <UsersPage />
+              <UsersFilterContextProvider>
+                <UsersPage />
+              </UsersFilterContextProvider>
             </Layout>
           </ProtectedRoute>
         }

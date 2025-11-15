@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import * as apiClient from "../apiClient";
 import { ManageProduct } from "../forms/ManageProduct/ManageProduct";
 import { toast } from "sonner";
+import { ApiClient } from "@/utils/ApiClient";
 
 const NewProduct = () => {
   const { mutate, isPending } = useMutation({
-    mutationFn: apiClient.newProduct,
+    mutationFn: ApiClient.newProduct,
     onSuccess: () => {
       toast.success("Your product is submitted successfully.");
     },

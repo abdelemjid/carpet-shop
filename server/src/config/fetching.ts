@@ -10,5 +10,5 @@ export const FetchingUsersConfig = {
 
 export const FetchingOrdersConfig = {
   page: 1,
-  limit: 20,
+  limit: 15,
 };

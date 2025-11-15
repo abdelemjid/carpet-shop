@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import * as apiClient from "../apiClient";
 import { useParams } from "react-router-dom";
 import type { Order, OrderUpdateRequestBody } from "../types/order.type";
 import { useEffect } from "react";
@@ -7,6 +6,7 @@ import OrderItem from "@/components/orders/OrderItem";
 import { toast } from "sonner";
 import type { UserUpdateRequest } from "@/types/user.type";
 import UserDetailsForm from "@/forms/UpdateUser/UserDetailsForm";
+import { ApiClient } from "@/utils/ApiClient";
 
 const UserOrders = () => {
   const { userId } = useParams();
@@ -25,7 +25,7 @@ const UserOrders = () => {
     refetch: refetchUser,
   } = useQuery({
     queryKey: [userId],
-    queryFn: () => apiClient.fetchUser(userId),
+    queryFn: () => ApiClient.fetchUser(userId),
   });
 
   const {
@@ -34,7 +34,7 @@ const UserOrders = () => {
     refetch: refetchOrders,
   } = useQuery({
     queryKey: [`orders: ${userId}`],
-    queryFn: () => apiClient.fetchUserOrders(userId),
+    queryFn: () => ApiClient.fetchUserOrders(userId),
   });
 
   // Update user info
@@ -65,11 +65,11 @@ const UserOrders = () => {
   });
 
   const { mutate: deleteUser, isSuccess: isDeleted } = useMutation({
-    mutationFn: apiClient.deleteUser,
+    mutationFn: ApiClient.deleteUser,
   });
 
   const { mutate: updateOrder, isPending: updateOrderPending } = useMutation({
-    mutationFn: apiClient.updateOrder,
+    mutationFn: ApiClient.updateOrder,
   });
 
   const updateStatus = async (

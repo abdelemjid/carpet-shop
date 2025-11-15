@@ -5,6 +5,8 @@ import {
   deleteProduct,
   newProduct,
   updateProduct,
+  allProducts,
+  getProduct,
 } from '../../controllers/admin/product.controller';
 import {
   fetchProductsValidator,
@@ -13,7 +15,6 @@ import {
   updateProductValidator,
 } from '../../validators/product.validator';
 import { validateRequest } from '../../middleware/validation.middleware';
-import { allProducts, getProduct } from '../../controllers/user/product.controller';
 
 const router = Router();
 

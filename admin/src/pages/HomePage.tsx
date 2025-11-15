@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import * as apiClient from "@/apiClient";
 import StatsSection from "@/components/home/StatsSection";
 import LineChartView from "@/components/home/LineChartView";
-import { useEffect, useState } from "react";
-import DateFilter from "@/components/home/DateFilter";
+import { useEffect } from "react";
+import { ApiClient } from "@/utils/ApiClient";
+import { useHomeFilterContext } from "@/contexts/home/HomeFilterContext";
+import HomeFilters from "@/components/home/HomeFilters";
 
 const HomePage = () => {
-  const now = new Date();
-  const [fromDate, setFromDate] = useState<Date | undefined>(
-    new Date(now.getFullYear(), now.getMonth(), 1)
-  );
-  const [toDate, setToDate] = useState<Date | undefined>(new Date());
+  const { fromDate, setFromDate, toDate, setToDate, clearFilter } =
+    useHomeFilterContext();
 
   const statsFilter = {
     start: fromDate?.toISOString(),
@@ -19,13 +17,20 @@ const HomePage = () => {
 
   const { data: stats, refetch: refetchStats } = useQuery({
     queryKey: ["stats", statsFilter],
-    queryFn: () => apiClient.fetchStats(statsFilter),
+    queryFn: () => ApiClient.fetchStats(statsFilter),
   });
 
   const { data: daily, refetch: refetchDaily } = useQuery({
     queryKey: ["daily", statsFilter],
-    queryFn: () => apiClient.fetchDailyStats(statsFilter),
+    queryFn: () => ApiClient.fetchDailyStats(statsFilter),
   });
+
+  useEffect(() => {
+    const now = new Date();
+
+    setFromDate(new Date(now.getFullYear(), now.getMonth(), 0));
+    setToDate(now);
+  }, []);
 
   useEffect(() => {
     refetchStats();
@@ -34,12 +39,13 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Date Filter */}
-      <DateFilter
+      {/* Filters */}
+      <HomeFilters
         fromDate={fromDate}
-        toDate={toDate}
         setFromDate={setFromDate}
+        toDate={toDate}
         setToDate={setToDate}
+        clearFilter={clearFilter}
       />
       {/* Stats Cards */}
       <StatsSection stats={stats} />

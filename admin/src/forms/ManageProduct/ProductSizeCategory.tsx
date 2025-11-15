@@ -1,3 +1,13 @@
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { Product } from "@/types/product.type";
 import { useFormContext } from "react-hook-form";
 
@@ -5,16 +15,20 @@ const ProductSizeCategory = () => {
   const {
     register,
     formState: { errors },
+    watch,
+    setValue,
   } = useFormContext<Product>();
+
+  const category = watch("category");
 
   return (
     <div className="flex flex-col md:flex-row md:gap-2">
       {/* Product Height */}
       <div className="flex flex-col flex-1 mt-1">
-        <label htmlFor="height" className="text-sm">
+        <label htmlFor="height" className="text-xs">
           Carpet Height
         </label>
-        <input
+        <Input
           type="number"
           {...register("height", {
             required: "* Carpet height is required!",
@@ -23,7 +37,6 @@ const ProductSizeCategory = () => {
               message: "Carpet's Height can not be less than 1",
             },
           })}
-          className="w-full bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
         />
         <span className="text-xs text-red-400 my-1">
           {errors.height && errors.height.message}
@@ -31,16 +44,15 @@ const ProductSizeCategory = () => {
       </div>
       {/* Product Width */}
       <div className="flex flex-col flex-1 mt-1">
-        <label htmlFor="width" className="text-sm">
+        <label htmlFor="width" className="text-xs">
           Carpet Width
         </label>
-        <input
+        <Input
           type="number"
           {...register("width", {
             required: "* Carpet's Width is required!",
             min: { value: 1, message: "Carpet's width can not be less than 1" },
           })}
-          className="w-full bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
         />
         <span className="text-xs text-red-400 my-1">
           {errors.width && errors.width.message}
@@ -48,22 +60,22 @@ const ProductSizeCategory = () => {
       </div>
       {/* Product Category */}
       <div className="flex flex-col flex-1 mt-1">
-        <label htmlFor="category" className="text-sm">
-          Carpet Category
-        </label>
-        <select
-          {...register("category", {
-            required: "* Carpet's Category is required!",
-            validate: (value) =>
-              ["l", "s", "m"].includes(value) ||
-              "Carpet's category is not valid!",
-          })}
-          className="w-full bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
-        >
-          <option value="s">Small</option>
-          <option value="m">Medium</option>
-          <option value="l">Large</option>
-        </select>
+        <label className="text-xs">Category</label>
+        <Select value={category} onValueChange={(v) => setValue("category", v)}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Categories</SelectLabel>
+              {["s", "m", "l"].map((c) => (
+                <SelectItem key={`category-${c}`} value={c}>
+                  {c.toUpperCase()}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
         <span className="text-xs text-red-400 my-1">
           {errors.category && errors.category.message}

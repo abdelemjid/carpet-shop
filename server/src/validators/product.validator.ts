@@ -27,6 +27,7 @@ export const newProductValidator = [
 ];
 
 export const updateProductValidator = [
+  param('productId').isMongoId().withMessage('Invalid product ID!'),
   body('name')
     .isString()
     .withMessage('Product name is not valid!')
@@ -73,5 +74,5 @@ export const fetchProductsValidator = [
   query('toDate').optional().isDate().withMessage('invalid To Date filter!'),
   query('fromQuantity').optional().isInt({ min: -1, max: 9999 }).withMessage('invalid quantity!'),
   query('toQuantity').optional().isInt({ min: -1, max: 9999 }).withMessage('invalid quantity!'),
-  query('category').optional().isIn(['default', 's', 'm', 'l']).withMessage('invalid category!'),
+  query('category').optional().isIn(['s', 'm', 'l']).withMessage('invalid category!'),
 ];

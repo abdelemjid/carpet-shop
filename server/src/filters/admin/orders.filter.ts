@@ -34,23 +34,23 @@ export interface OrdersSearchQuery {
 export const constructorOrdersFilter = (searchQuery: any) => {
   const query: OrdersSearchQuery = {};
 
-  if (searchQuery.fromDate) {
-    if (query.createdAt) query.createdAt.$gte = new Date(searchQuery.fromDate);
-    else query.createdAt = { $gte: new Date(searchQuery.fromDate) };
+  if (searchQuery.fromDate || searchQuery.toDate) {
+    query.createdAt = {
+      ...(searchQuery.fromDate && { $gte: new Date(searchQuery.fromDate) }),
+      ...(searchQuery.toDate && { $lte: new Date(searchQuery.toDate) }),
+    };
   }
-  if (searchQuery.toDate) {
-    if (query.createdAt) query.createdAt.$lte = new Date(searchQuery.toDate);
-    else query.createdAt = { $lte: new Date(searchQuery.toDate) };
+
+  if (searchQuery.quantityFrom || searchQuery.quantityTo) {
+    query.quantity = {
+      ...(searchQuery.quantityFrom && { $gte: parseInt(searchQuery.quantityFrom) }),
+      ...(searchQuery.quantityTo && { $lte: parseInt(searchQuery.quantityTo) }),
+    };
   }
-  if (searchQuery.quantityFrom) {
-    if (query.quantity) query.quantity.$gte = parseInt(searchQuery.quantityFrom);
-    else query.quantity = { $gte: parseInt(searchQuery.quantityFrom) };
+
+  if (searchQuery.status) {
+    query.status = searchQuery.status;
   }
-  if (searchQuery.quantityTo) {
-    if (query.quantity) query.quantity.$lte = parseInt(searchQuery.quantityTo);
-    else query.quantity = { $lte: parseInt(searchQuery.quantityTo) };
-  }
-  if (searchQuery.status) query.status = searchQuery.status;
 
   return query;
 };

@@ -241,8 +241,8 @@ export class ApiClient {
 
   /****************** Orders ******************/
 
-  static getOrders = async (): Promise<OrdersResponse | null> => {
-    const response = await fetch(`${API_BASE_URL}/api/orders`, {
+  static getOrders = async (page: number): Promise<OrdersResponse | null> => {
+    const response = await fetch(`${API_BASE_URL}/api/orders?page=${page}`, {
       method: "GET",
       credentials: "include",
     });

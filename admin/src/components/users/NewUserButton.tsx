@@ -1,23 +1,27 @@
 import { Plus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
 interface Props {
   hidden: boolean;
 }
 
 const NewUserButton = ({ hidden }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div
-      className={`fixed bottom-2 right-2 transition-opacity ${
+      className={`fixed bottom-[25px] right-[25px] md:bottom-[35px] md:right-[50px] transition-opacity ${
         hidden ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      <Link
-        to="/admin/users/new"
-        className="w-[50px] h-[50px] fixed z-50 bottom-[10px] right-[10px] md:bottom-[30px] md:right-[30px] rounded-full bg-indigo-500 hover:bg-indigo-400 transition-all duration-200 ease-in-out"
+      <Button
+        onClick={() => navigate("/admin/users/new")}
+        title="New User"
+        className="p-5 rounded-full cursor-pointer"
       >
-        <Plus size={35} className="h-full m-auto" />
-      </Link>
+        <Plus />
+      </Button>
     </div>
   );
 };

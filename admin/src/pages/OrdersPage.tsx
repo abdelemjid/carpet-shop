@@ -1,33 +1,43 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import * as apiClient from "../apiClient";
 import loading from "../assets/loading.svg";
 import {
   OrderStatusEnum,
   type Order,
   type OrdersQuery,
   type OrderUpdateRequestBody,
-  type Status,
 } from "@/types/order.type";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import OrderItem from "@/components/orders/OrderItem";
 import OrdersFilter from "@/components/orders/OrdersFilter";
 import PaginationView from "@/components/PaginationView";
 import OrderHeader from "@/components/orders/OrderHeader";
+import { ApiClient } from "@/utils/ApiClient";
+import { useOrdersFilterContext } from "@/contexts/orders/OrdersFilterContext";
 
 const OrdersPage = () => {
-  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
-  const [toDate, setToDate] = useState<Date | undefined>(undefined);
-  const [quantity, setQuantity] = useState<number[] | undefined>(undefined);
-  const [status, setStatus] = useState<Status | undefined>(undefined);
-  const [page, setPage] = useState<number>(1);
+  const {
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
+    fQuantity,
+    setFQuantity,
+    tQuantity,
+    setTQuantity,
+    status,
+    setStatus,
+    page,
+    setPage,
+    clearFilter,
+  } = useOrdersFilterContext();
 
   const query: OrdersQuery = {};
 
   if (page) query.page = page;
   if (fromDate) query.fromDate = fromDate.toISOString().split("T")[0];
   if (toDate) query.toDate = toDate.toISOString().split("T")[0];
-  if (quantity && quantity.length > 0) query.quantityFrom = quantity[0];
-  if (quantity && quantity.length > 1) query.quantityTo = quantity[1];
+  if (fQuantity) query.quantityFrom = fQuantity;
+  if (tQuantity) query.quantityTo = tQuantity;
   if (status && OrderStatusEnum.includes(status)) query.status = status;
 
   const {
@@ -36,11 +46,11 @@ const OrdersPage = () => {
     isLoading: ordersLoading,
   } = useQuery({
     queryKey: ["allOrders", query],
-    queryFn: () => apiClient.fetchAllOrders(query),
+    queryFn: () => ApiClient.fetchAllOrders(query),
   });
 
   const { mutate: updateOrder, isPending: updateStatusLoading } = useMutation({
-    mutationFn: apiClient.updateOrder,
+    mutationFn: ApiClient.updateOrder,
   });
 
   const handleStatus = async (
@@ -59,7 +69,15 @@ const OrdersPage = () => {
 
   useEffect(() => {
     refetchOrders();
-  }, [updateStatusLoading, page, quantity, status, fromDate, toDate]);
+  }, [
+    updateStatusLoading,
+    page,
+    fQuantity,
+    tQuantity,
+    status,
+    fromDate,
+    toDate,
+  ]);
 
   if (ordersLoading) {
     return (
@@ -85,12 +103,15 @@ const OrdersPage = () => {
         setFromDate={setFromDate}
         toDate={toDate}
         setToDate={setToDate}
-        quantity={quantity}
-        setQuantity={setQuantity}
+        fQuantity={fQuantity}
+        tQuantity={tQuantity}
+        setFQuantity={setFQuantity}
+        setTQuantity={setTQuantity}
         status={status}
         setStatus={setStatus}
         page={page}
         setPage={setPage}
+        clearFilter={clearFilter}
       />
       {/* Orders */}
       {orderData.orders.length === 0 ? (

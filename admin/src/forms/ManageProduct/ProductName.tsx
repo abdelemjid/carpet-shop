@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import type { Product } from "@/types/product.type";
 import { useFormContext } from "react-hook-form";
 
@@ -9,13 +10,13 @@ const ProductName = () => {
 
   return (
     <div className="flex flex-col">
-      <label htmlFor="name" className="text-sm">
+      <label htmlFor="name" className="text-xs">
         Name
       </label>
-      <input
+      <Input
         type="text"
         {...register("name", { required: "* This field is required!" })}
-        className="w-full bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
+        className="w-full"
       />
       <span className="text-xs text-red-400 my-1">
         {errors.name && errors.name.message}

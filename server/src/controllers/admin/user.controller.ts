@@ -84,7 +84,7 @@ export const getUsers = async (req: Request, res: Response) => {
   try {
     const query: UsersFilterQuery = req?.query ? constructUsersFilterQuery(req.query) : {};
 
-    const page = Math.max(parseInt(req.query.page as string) || FetchingUsersConfig.pageNumber, 1);
+    const page = Number(req?.query?.page as string) || FetchingUsersConfig.pageNumber;
     const limit = Math.max(FetchingUsersConfig.pageSize, 1);
     const skip = (page - 1) * limit;
 
@@ -92,8 +92,8 @@ export const getUsers = async (req: Request, res: Response) => {
     query._id = { $ne: req.userId };
 
     const [users, total] = await Promise.all([
-      await userModel.find(query).select('-password').skip(skip).limit(limit).lean<User[]>(),
-      await userModel.countDocuments(query),
+      userModel.find(query).select('-password').skip(skip).limit(limit).lean<User[]>(),
+      userModel.countDocuments(query),
     ]);
 
     const response: UsersResponse = {

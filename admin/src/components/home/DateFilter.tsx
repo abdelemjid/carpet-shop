@@ -7,12 +7,12 @@ import { useState } from "react";
 
 interface Props {
   fromDate: Date | undefined;
-  toDate: Date | undefined;
   setFromDate: (from: Date | undefined) => void;
+  toDate: Date | undefined;
   setToDate: (to: Date | undefined) => void;
 }
 
-const DateFilter = ({ fromDate, toDate, setFromDate, setToDate }: Props) => {
+const DateFilter = ({ fromDate, setFromDate, toDate, setToDate }: Props) => {
   const [fromOpen, setFromOpen] = useState(false);
   const [toOpen, setToOpen] = useState(false);
 

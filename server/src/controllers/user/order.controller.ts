@@ -34,11 +34,8 @@ export const getMyOrders = async (req: Request, res: Response) => {
     const userId = req?.userId;
     if (!userId) return res.status(401).json({ error: 'Unauthorized!' });
 
-    const page = Math.max(
-      parseInt(req?.query?.page as string, FetchingOrdersConfig.page) || FetchingOrdersConfig.page,
-      FetchingOrdersConfig.page,
-    );
-    const limit = Math.max(FetchingOrdersConfig.limit, 15);
+    const page = Number(req?.query?.page) || FetchingOrdersConfig.page;
+    const limit = Math.max(FetchingOrdersConfig.limit, 5);
     const skip = (page - 1) * limit;
 
     const userObjectId = new Types.ObjectId(userId);

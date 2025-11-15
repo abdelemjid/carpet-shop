@@ -1,96 +1,109 @@
 import { useQuery } from "@tanstack/react-query";
-import * as apiClient from "../apiClient";
-import ProductItem from "../components/products/ProductItem";
-import type { Product } from "../types/product.type";
 import { useImagePreview } from "../contexts/ImagePreviewContext";
-import { Link } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Plus } from "lucide-react";
 import ProductsFilter from "@/components/products/ProductsFilter";
-import loading from "@/assets/loading.svg";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PaginationView from "@/components/PaginationView";
 import ImagePreview from "@/components/products/ImagePreview";
+import { ApiClient } from "@/utils/ApiClient";
+import { useProductsFilterContext } from "@/contexts/products/ProductsFilter";
+import ProductsSection from "@/components/products/ProductsSection";
+import { Button } from "@/components/ui/button";
 
 const ProductsPage = () => {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { displayed } = useImagePreview();
-  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
-  const [toDate, setToDate] = useState<Date | undefined>(undefined);
-  const [category, setCategory] = useState<string | undefined>(undefined);
-  const [quantity, setQuantity] = useState<
-    { from: number | undefined; to: number | undefined } | undefined
-  >(undefined);
-  const [page, setPage] = useState<number>(1);
-
-  let refetchTimer: ReturnType<typeof setTimeout> | null = null;
-
-  const productsFilter = {
-    fromDate,
-    toDate,
-    category,
-    quantity,
+  const {
     page,
-  };
+    setPage,
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
+    category,
+    setCategory,
+    fQuantity,
+    setFQuantity,
+    tQuantity,
+    setTQuantity,
+  } = useProductsFilterContext();
 
   const {
     data: productData,
     refetch: refetchProducts,
     isLoading,
   } = useQuery({
-    queryKey: ["products", productsFilter],
-    queryFn: () => apiClient.fetchProducts(productsFilter),
+    queryKey: [
+      "products",
+      { fromDate, toDate, category, fQuantity, tQuantity, page },
+    ],
+    queryFn: () => {
+      const query = new URLSearchParams();
+
+      query.append("page", String(page));
+      if (fromDate)
+        query.append("fromDate", fromDate.toISOString().split("T")[0]);
+      if (toDate) query.append("toDate", toDate.toISOString().split("T")[0]);
+      if (category) query.append("category", category);
+      if (fQuantity) query.append("fromQuantity", String(fQuantity));
+      if (tQuantity) query.append("toQuantity", String(tQuantity));
+
+      return ApiClient.fetchProducts(query.toString());
+    },
   });
 
   useEffect(() => {
-    if (refetchTimer) clearTimeout(refetchTimer);
+    const fromDate = searchParams.get("fromDate");
+    const toDate = searchParams.get("toDate");
 
-    refetchTimer = setTimeout(refetchProducts, 1500);
-  }, [fromDate, toDate, category, quantity, page]);
+    setPage(Number(searchParams.get("page")) || 1);
+    searchParams.get("category")
+      ? setCategory(String(searchParams.get("category")))
+      : setCategory(undefined);
+    fromDate ? setFromDate(new Date(fromDate)) : setFromDate(undefined);
+    toDate ? setToDate(new Date(toDate)) : setToDate(undefined);
+    searchParams.get("fromQuantity")
+      ? setFQuantity(Number(searchParams.get("fromQuantity")))
+      : setFQuantity(undefined);
+    searchParams.get("toQuantity")
+      ? setTQuantity(Number(searchParams.get("toQuantity")))
+      : setTQuantity(undefined);
+  }, []);
 
-  if (isLoading) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <img src={loading} className="w-[35px] h-[35px]" />
-      </div>
-    );
-  }
+  useEffect(() => {
+    const query = new URLSearchParams();
 
-  if (!productData) {
-    return (
-      <div className="w-full border border-gray-50/30 rounded-md p-5 bg-gray-800/20">
-        <span className="text-md text-center">No products yet</span>
-      </div>
-    );
-  }
+    if (page) query.append("page", String(page));
+    if (fromDate)
+      query.append("fromDate", fromDate.toISOString().split("T")[0]);
+    if (toDate) query.append("toDate", toDate.toISOString().split("T")[0]);
+    if (category && category !== "null") query.append("category", category);
+    if (fQuantity) query.append("fromQuantity", String(fQuantity));
+    if (tQuantity) query.append("toQuantity", String(tQuantity));
+
+    setSearchParams(query);
+
+    refetchProducts();
+  }, [fromDate, toDate, category, fQuantity, tQuantity, page]);
 
   return (
-    <div className="relative flex flex-col gap-5">
+    <div className="min-h-screen relative flex flex-col gap-5">
       {/* Image Preview Alert */}
       {displayed && <ImagePreview />}
       {/* Products Filters */}
-      <ProductsFilter
-        fromDate={fromDate}
-        setFrom={setFromDate}
-        toDate={toDate}
-        setTo={setToDate}
-        selectedCategory={category}
-        setCategory={setCategory}
-        quantity={quantity}
-        setQuantity={setQuantity}
-      />
+      <ProductsFilter />
       {/* Products */}
-      <div className="grid [grid-template-columns:repeat(auto-fit,minmax(330px,1fr))] gap-5 my-10">
-        {productData?.data &&
-          productData.data.map((product: Product) => (
-            <ProductItem product={product} key={product._id} />
-          ))}
-      </div>
+      <ProductsSection data={productData} isLoading={isLoading} />
       {/* New Product Button */}
-      <Link
-        to="/admin/products/new"
-        className="w-[50px] h-[50px] fixed z-50 bottom-[10px] right-[10px] md:bottom-[30px] md:right-[30px] rounded-full bg-indigo-500 hover:bg-indigo-400 transition-all duration-200 ease-in-out"
+      <Button
+        onClick={() => navigate("/admin/products/new")}
+        title="New Product"
+        className="fixed bottom-[50px] right-[50px] z-50 cursor-pointer rounded-full p-5"
       >
-        <Plus size={35} className="h-full m-auto" />
-      </Link>
+        <Plus />
+      </Button>
       {/* Pagination */}
       <PaginationView
         page={page}

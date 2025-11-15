@@ -12,15 +12,15 @@ import { Button } from "@/components/ui/button";
 interface Props {
   product?: Product;
   onSave: (productData: FormData) => void;
-  onDelete?: (e: any) => void;
   isLoading: boolean;
+  showDeleteDialog: () => void;
 }
 
 export const ManageProduct = ({
   product,
   onSave,
-  onDelete,
   isLoading,
+  showDeleteDialog,
 }: Props) => {
   const formMethods = useForm<Product>();
   const { handleSubmit, reset } = formMethods;
@@ -32,6 +32,7 @@ export const ManageProduct = ({
 
   const onSubmit = handleSubmit((productData: Product) => {
     const formData = new FormData();
+
     if (product?._id) formData.append("_id", product._id);
     formData.append("name", productData.name);
     formData.append("description", productData.description);
@@ -62,13 +63,15 @@ export const ManageProduct = ({
         <ProductQuantityPrice />
         <ProductSizeCategory />
         <ProductImages />
-        <div className="flex flex-row md:flex-col justify-between gap-2 mt-3">
+        <div className="flex flex-col md:flex-row justify-between gap-2 mt-3">
           {/* Delete Button */}
           {product && (
             <Button
               disabled={isLoading}
-              onClick={onDelete}
-              className="w-full flex justify-center items-center py-1 px-3 rounded-md bg-red-500 hover:bg-red-400 cursor-pointer"
+              onClick={() => showDeleteDialog()}
+              variant="outline"
+              type="button"
+              className="flex-1 text-red-500 cursor-pointer"
             >
               {isLoading ? (
                 <img src={loading} className="w-[20px]" />
@@ -81,7 +84,7 @@ export const ManageProduct = ({
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center items-center py-1 px-3 cursor-pointer"
+            className="flex-1 flex justify-center items-center py-1 px-3 cursor-pointer"
           >
             {isLoading ? (
               <img src={loading} className="w-[20px]" />

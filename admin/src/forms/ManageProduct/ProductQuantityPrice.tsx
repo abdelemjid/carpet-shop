@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import type { Product } from "@/types/product.type";
 import { useFormContext } from "react-hook-form";
 
@@ -11,16 +12,15 @@ const ProductQuantityPrice = () => {
     <div className="flex flex-col md:flex-row md:gap-2">
       {/* Product Price */}
       <div className="flex flex-col flex-1 mt-1">
-        <label htmlFor="price" className="text-sm">
+        <label htmlFor="price" className="text-xs">
           Price
         </label>
-        <input
+        <Input
           type="number"
           {...register("price", {
             required: "* Price is required!",
             min: { value: 1, message: "Minimum acceptable value is 1" },
           })}
-          className="w-full bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
         />
         <span className="text-xs text-red-400 my-1">
           {errors.price && errors.price.message}
@@ -28,16 +28,15 @@ const ProductQuantityPrice = () => {
       </div>
       {/* Product Description */}
       <div className="flex flex-col flex-1 mt-1">
-        <label htmlFor="quantity" className="text-sm">
+        <label htmlFor="quantity" className="text-xs">
           Quantity
         </label>
-        <input
+        <Input
           type="number"
           {...register("quantity", {
             required: "* Quantity is required!",
             min: { value: 0, message: "Negative values is not acceptable" },
           })}
-          className="w-full bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
         />
         <span className="text-xs text-red-400 my-1">
           {errors.quantity && errors.quantity.message}

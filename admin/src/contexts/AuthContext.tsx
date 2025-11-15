@@ -1,5 +1,5 @@
+import { ApiClient } from "@/utils/ApiClient";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import * as apiClient from "../apiClient";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const result = await apiClient.verifyToken();
+        const result = await ApiClient.verifyToken();
         setIsAuthenticated(!!result);
         result && setUser(result);
       } finally {

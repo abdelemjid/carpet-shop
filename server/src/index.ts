@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import { v2 as cloudinary } from 'cloudinary';
 import authRoutes from './routes/auth/auth.route';
 import productRoute from './routes/user/product.route';
+import productRouteAdmin from './routes/admin/product.route';
 import userRoute from './routes/admin/user.route';
 import orderRoute from './routes/user/order.route';
 import adminOrderRoute from './routes/admin/order.route';
@@ -68,7 +69,7 @@ app.use('/api/cart', cartRoute);
 app.use('/api/checkout', checkoutRoute);
 // admin routes
 app.use('/api/admin/users', userRoute);
-app.use('/api/admin/products', productRoute);
+app.use('/api/admin/products', productRouteAdmin);
 app.use('/api/admin/orders', adminOrderRoute);
 app.use('/api/admin/stats', statsRoute);
 

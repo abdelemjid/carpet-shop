@@ -38,16 +38,13 @@ export const getUserOrders = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
-    const page = Math.max(
-      parseInt(req?.query?.page as string, FetchingOrdersConfig.page) || FetchingOrdersConfig.page,
-      FetchingOrdersConfig.page,
-    );
+    const page = Number(req?.query?.page as string) || FetchingOrdersConfig.page;
     const limit = Math.max(FetchingOrdersConfig.limit, 15);
     const skip = (page - 1) * limit;
 
     const [orders, total] = await Promise.all([
-      await orderModel.find({ userId: userId }).skip(skip).limit(limit).lean<Order[]>(),
-      await orderModel.countDocuments({ userId: userId }),
+      orderModel.find({ userId: userId }).skip(skip).limit(limit).lean<Order[]>(),
+      orderModel.countDocuments({ userId: userId }),
     ]);
 
     const response: OrdersResponse = {
@@ -102,16 +99,13 @@ export const getOrders = async (req: Request, res: Response) => {
   try {
     const query: OrdersSearchQuery = req?.query ? constructorOrdersFilter(req.query) : {};
 
-    const page = Math.max(
-      parseInt(req?.query?.page as string, FetchingOrdersConfig.page) || FetchingOrdersConfig.page,
-      FetchingOrdersConfig.page,
-    );
-    const limit = Math.max(FetchingOrdersConfig.limit, 15);
+    const page = Number(req?.query?.page as string) || FetchingOrdersConfig.page;
+    const limit = FetchingOrdersConfig.limit;
     const skip = (page - 1) * limit;
 
     const [orders, total] = await Promise.all([
-      await orderModel.find(query).skip(skip).limit(limit).lean<Order[]>(),
-      await orderModel.countDocuments(query),
+      orderModel.find(query).skip(skip).limit(limit).lean<Order[]>(),
+      orderModel.countDocuments(query),
     ]);
 
     const response: OrdersResponse = {

@@ -7,7 +7,6 @@ import { ShieldUser, User as UserIcon, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import UserStatusSelector from "./UserStatusSelector";
 import { useEffect } from "react";
-import { Separator } from "@/components/ui/separator";
 
 interface Props {
   user: User;

@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Menu, Sun, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import * as apiClient from "@/apiClient";
 import { useAppContext } from "@/contexts/AppContext";
+import { ApiClient } from "@/utils/ApiClient";
 
 const Navbar = () => {
   const [toggled, setToggled] = useState(false);
@@ -14,7 +14,7 @@ const Navbar = () => {
   const { mutate: handleLogout } = useMutation({
     mutationKey: ["logout"],
     mutationFn: async () => {
-      await apiClient.logout();
+      await ApiClient.logout();
       logout();
     },
   });

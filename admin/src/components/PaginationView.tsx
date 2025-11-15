@@ -9,7 +9,7 @@ import {
 } from "./ui/pagination";
 
 interface Props {
-  page?: number;
+  page: number;
   hasNext?: boolean;
   hasPrev?: boolean;
   setPage: (page: number) => void;
@@ -17,7 +17,7 @@ interface Props {
 
 const PaginationView = ({ page, setPage, hasNext, hasPrev }: Props) => {
   return (
-    <div className="mx-auto px-3 py-1 rounded-md bg-gray-900/20 backdrop-blur-md">
+    <div className="sticky bottom-0 left-0 mx-auto px-3 py-1 rounded-md bg-gray-900/20 backdrop-blur-md">
       <Pagination>
         <PaginationContent className="gap-5">
           <PaginationItem>

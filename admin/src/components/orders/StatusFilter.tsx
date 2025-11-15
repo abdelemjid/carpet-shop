@@ -11,8 +11,8 @@ import {
 import { Label } from "../ui/label";
 
 interface Props {
-  status?: Status | undefined;
-  setStatus?: (status: Status | undefined) => void;
+  status: Status | undefined;
+  setStatus: (status: Status | undefined) => void;
 }
 
 const StatusFilter = ({ status, setStatus }: Props) => {
@@ -20,14 +20,7 @@ const StatusFilter = ({ status, setStatus }: Props) => {
     return `${s.charAt(0).toUpperCase()}${s.slice(1)}`;
   };
 
-  const statusItems = [
-    "default",
-    "pending",
-    "prepared",
-    "refused",
-    "sent",
-    "delivered",
-  ];
+  const statusItems = ["pending", "prepared", "refused", "sent", "delivered"];
 
   return (
     <div className="flex flex-col gap-3">
@@ -36,17 +29,12 @@ const StatusFilter = ({ status, setStatus }: Props) => {
       </Label>
       <Select
         value={status}
-        onValueChange={(value) => {
-          if (setStatus) {
-            if (value === "default") setStatus(undefined);
-            else setStatus(value as Status);
-          }
-        }}
+        onValueChange={(value) => setStatus(value as Status)}
       >
         <SelectTrigger id="status-filter" className="w-[150px] text-xs">
           <SelectValue placeholder="Select a Status" />
         </SelectTrigger>
-        <SelectContent className="text-xs" defaultValue={status}>
+        <SelectContent className="text-xs">
           <SelectGroup>
             <SelectLabel>Order Status</SelectLabel>
             {statusItems.map((s) => (

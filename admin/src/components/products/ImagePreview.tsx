@@ -15,7 +15,7 @@ const ImagePreview = () => {
         >
           <X />
         </button>
-        <div className="h-[80%] md:w-[80%]">
+        <div className="h-full md:w-[80%]">
           <div className="z-50 relative h-full flex flex-row gap-2 items-center justify-center">
             <button
               className="w-fit h-fit p-3 bg-gray-50/10 rounded-full hover:bg-gray-50/30 transition-all duration-150 ease-in-out translate-x-[25px]"
@@ -28,7 +28,7 @@ const ImagePreview = () => {
             </button>
             <img
               src={images && images.at(index)}
-              className="mx-auto h-[80%] transition-all duration-200 ease-in-out"
+              className="mx-auto h-full transition-all duration-200 ease-in-out"
             />
             <button
               className="w-fit h-fit p-3 bg-gray-50/10 rounded-full hover:bg-gray-50/30 transition-all duration-150 ease-in-out translate-x-[-25px]"

@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import * as apiClient from "../apiClient";
 import loading from "../assets/loading.svg";
 import UserItem from "../components/users/UserItem";
 import type { User, UsersFilterSearchQuery } from "../types/user.type";
@@ -7,35 +6,48 @@ import { useEffect, useState } from "react";
 import UsersFilter from "@/components/users/UsersFilter";
 import PaginationView from "@/components/PaginationView";
 import NewUserButton from "@/components/users/NewUserButton";
+import { ApiClient } from "@/utils/ApiClient";
+import { useUsersFilterContext } from "@/contexts/user/UsersFilterContext";
 
 const UsersPage = () => {
   const [hidden, setHidden] = useState<boolean>(false);
   const [lastScroll, setLastScroll] = useState<number>(0);
-  const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
-  const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
-  const [status, setStatus] = useState<string | undefined>(undefined);
-  const [page, setPage] = useState<number>(1);
+  const {
+    clearFilter,
+    joinDateFrom,
+    setJoinDateFrom,
+    joinDateTo,
+    setJoinDateTo,
+    page,
+    setPage,
+    userStatus,
+    setUserStatus,
+  } = useUsersFilterContext();
 
   const query: UsersFilterSearchQuery = {
-    joinDateFrom: dateFrom?.toISOString().split("T")[0],
-    joinDateTo: dateTo?.toISOString().split("T")[0],
+    joinDateFrom: joinDateFrom?.toISOString().split("T")[0],
+    joinDateTo: joinDateTo?.toISOString().split("T")[0],
     page,
     banned:
-      status === "banned" ? true : status === "undefined" ? undefined : false,
+      userStatus === "banned"
+        ? true
+        : userStatus === "undefined"
+        ? undefined
+        : false,
   };
 
   const queryClient = useQueryClient();
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["users", query],
-    queryFn: () => apiClient.fetchUsers(query),
+    queryFn: () => ApiClient.fetchUsers(query),
   });
 
   const { isPending: isPendingBan, mutate: banUser } = useMutation({
-    mutationFn: apiClient.banUser,
+    mutationFn: ApiClient.banUser,
   });
 
   const { isPending: isPendingDelete, mutate: deleteUser } = useMutation({
-    mutationFn: apiClient.deleteUser,
+    mutationFn: ApiClient.deleteUser,
   });
 
   const handleBan = async (userId: string) => {
@@ -63,7 +75,14 @@ const UsersPage = () => {
 
   useEffect(() => {
     refetch();
-  }, [isPendingBan, isPendingDelete, status, dateFrom, dateTo, page]);
+  }, [
+    isPendingBan,
+    isPendingDelete,
+    userStatus,
+    joinDateFrom,
+    joinDateTo,
+    page,
+  ]);
 
   if (isLoading) {
     return (
@@ -77,12 +96,13 @@ const UsersPage = () => {
     <div className="flex flex-col">
       {/* Users Filter */}
       <UsersFilter
-        setJoinDateFrom={setDateFrom}
-        setJoinDateTo={setDateTo}
-        setUserStatus={setStatus}
-        joinDateFrom={dateFrom}
-        joinDateTo={dateTo}
-        userStatus={status}
+        joinDateFrom={joinDateFrom}
+        setJoinDateFrom={setJoinDateFrom}
+        joinDateTo={joinDateTo}
+        setJoinDateTo={setJoinDateTo}
+        userStatus={userStatus}
+        setUserStatus={setUserStatus}
+        clearFilter={clearFilter}
       />
       {/* Users */}
       <div className="flex flex-col gap-2 justify-center items-center my-10">

@@ -1,46 +1,49 @@
+import { X } from "lucide-react";
 import DateFilter from "../home/DateFilter";
+import { Button } from "../ui/button";
 import CategoryFilter from "./CategoryFilter";
 import QuantityFilter from "./QuantityFilter";
+import { useProductsFilterContext } from "@/contexts/products/ProductsFilter";
 
-interface Props {
-  fromDate: Date | undefined;
-  toDate: Date | undefined;
-  setFrom: (from: Date | undefined) => void;
-  setTo: (to: Date | undefined) => void;
-  selectedCategory: string | undefined;
-  setCategory: (category: string) => void;
-  quantity: { from: number | undefined; to: number | undefined } | undefined;
-  setQuantity: (quantity: {
-    from: number | undefined;
-    to: number | undefined;
-  }) => void;
-}
+const ProductsFilter = () => {
+  const {
+    clearFilter,
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
+    fQuantity,
+    setFQuantity,
+    tQuantity,
+    setTQuantity,
+  } = useProductsFilterContext();
 
-const ProductsFilter = ({
-  fromDate,
-  setFrom,
-  toDate,
-  setTo,
-  selectedCategory,
-  setCategory,
-  quantity,
-  setQuantity,
-}: Props) => {
   return (
     <div className="flex flex-col lg:flex-row gap-4">
       {/* Date Pickers */}
       <DateFilter
         fromDate={fromDate}
-        setFromDate={setFrom}
-        setToDate={setTo}
+        setFromDate={setFromDate}
         toDate={toDate}
+        setToDate={setToDate}
       />
-
       {/* Category */}
-      <CategoryFilter selected={selectedCategory} setCategory={setCategory} />
-
+      <CategoryFilter />
       {/* Quantity */}
-      <QuantityFilter quantity={quantity} setQuantity={setQuantity} />
+      <QuantityFilter
+        fQuantity={fQuantity}
+        setFQuantity={setFQuantity}
+        tQuantity={tQuantity}
+        setTQuantity={setTQuantity}
+      />
+      {/* Clear Button */}
+      <Button
+        onClick={() => clearFilter()}
+        variant="outline"
+        className="w-fit text-red-500 lg:self-end cursor-pointer"
+      >
+        <X /> Clear
+      </Button>
     </div>
   );
 };

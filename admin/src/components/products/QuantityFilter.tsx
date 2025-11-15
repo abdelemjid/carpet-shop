@@ -1,39 +1,46 @@
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 interface Props {
-  quantity: { from: number | undefined; to: number | undefined } | undefined;
-  setQuantity: (quantity: {
-    from: number | undefined;
-    to: number | undefined;
-  }) => void;
+  fQuantity: number | undefined;
+  tQuantity: number | undefined;
+  setFQuantity: (from: number | undefined) => void;
+  setTQuantity: (to: number | undefined) => void;
 }
 
-const QuantityFilter = ({ quantity, setQuantity }: Props) => {
-  let timerFrom: ReturnType<typeof setTimeout> | null = null;
-  let timerTo: ReturnType<typeof setTimeout> | null = null;
+const QuantityFilter = ({
+  fQuantity,
+  setFQuantity,
+  tQuantity,
+  setTQuantity,
+}: Props) => {
+  const [fInput, setFInput] = useState<number | undefined>(fQuantity);
+  const [tInput, setTInput] = useState<number | undefined>(tQuantity);
 
-  const handleFromQuantity = (value: number | undefined) => {
-    if (timerFrom) clearTimeout(timerFrom);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFQuantity(fInput);
+    }, 800);
 
-    timerFrom = setTimeout(() => {
-      setQuantity({
-        from: value,
-        to: quantity?.to || undefined,
-      });
-    }, 1000);
-  };
+    return () => clearTimeout(timer);
+  }, [fInput, setFQuantity]);
 
-  const handleToQuantity = (value: number | undefined) => {
-    if (timerTo) clearTimeout(timerTo);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTQuantity(tInput);
+    }, 800);
 
-    timerTo = setTimeout(() => {
-      setQuantity({
-        from: quantity?.from || undefined,
-        to: value,
-      });
-    }, 1000);
-  };
+    return () => clearTimeout(timer);
+  }, [tInput, setTQuantity]);
+
+  useEffect(() => {
+    setFInput(fQuantity);
+  }, [fQuantity]);
+
+  useEffect(() => {
+    setTInput(tQuantity);
+  }, [tQuantity]);
 
   return (
     <div className="flex flex-row gap-3 lg:justify-center">
@@ -49,13 +56,8 @@ const QuantityFilter = ({ quantity, setQuantity }: Props) => {
           id="quantity-start"
           min={-1}
           max={9999}
-          value={quantity?.from || undefined}
-          onChange={(e) =>
-            setQuantity({
-              from: parseInt(e.target.value) || undefined,
-              to: quantity?.to || undefined,
-            })
-          }
+          value={fInput}
+          onChange={(e) => setFInput(Number(e?.target?.value) || undefined)}
           className="w-40"
         />
       </div>
@@ -71,13 +73,8 @@ const QuantityFilter = ({ quantity, setQuantity }: Props) => {
           id="quantity-to"
           min={-1}
           max={9999}
-          value={quantity?.to || undefined}
-          onChange={(e) =>
-            setQuantity({
-              from: quantity?.from || undefined,
-              to: parseInt(e.target.value) || undefined,
-            })
-          }
+          value={tInput}
+          onChange={(e) => setTInput(Number(e?.target?.value) || undefined)}
           className="w-40"
         />
       </div>

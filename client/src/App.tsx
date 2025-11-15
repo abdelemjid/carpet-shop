@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Home from "./pages/HomePage";
+import Login from "./pages/LoginPage";
 import Layout from "./layout/Layout";
-import ProductPreview from "./pages/ProductPreview";
-import Cart from "./pages/Cart";
+import ProductPreview from "./pages/ProductPreviewPage";
+import Cart from "./pages/CartPage";
 import PublicOnlyRoute from "./components/PublicOnlyRoute";
-import Orders from "./pages/Orders";
-import Products from "./pages/Products";
+import Orders from "./pages/OrdersPage";
+import Products from "./pages/ProductsPage";
 import { SearchFilterProvider } from "./contexts/SearchAndFiltersContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CheckoutPage from "./pages/CheckoutPage";

@@ -1,3 +1,4 @@
+import { Textarea } from "@/components/ui/textarea";
 import type { Product } from "@/types/product.type";
 import { useFormContext } from "react-hook-form";
 
@@ -9,12 +10,12 @@ const ProductDescription = () => {
 
   return (
     <div className="flex flex-col mt-1">
-      <label htmlFor="description" className="text-sm">
+      <label htmlFor="description" className="text-xs">
         Description
       </label>
-      <textarea
+      <Textarea
         {...register("description", { required: "* This field is required!" })}
-        className="w-full min-h-[100px] bg-gray-50/30 py-1 px-3 rounded-md border border-gray-50/40 outline-none focus:border-gray-50"
+        className="w-full min-h-[150px]"
       />
       <span className="text-xs text-red-400 my-1">
         {errors.description && errors.description.message}
